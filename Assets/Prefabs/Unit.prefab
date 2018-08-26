@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23885701906747144}
   - component: {fileID: 65968178566290876}
   - component: {fileID: 114923427548085336}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,6 +181,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a5ad16a1b2e9742bf625da645b38ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  actionPoints: 20
+  unitName: Unit 001
+  health: 20
+  maxHealth: 20
+  actionPoints: 40
+  maxActionPoints: 40
   attack: 5

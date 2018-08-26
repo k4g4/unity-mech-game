@@ -6,7 +6,9 @@ public class Unit : MonoBehaviour
 {
     public string unitName;
     public int health;
+    public int maxHealth;
     public int actionPoints;
+    public int maxActionPoints;
     public int attack;
 
     Vector3 movePos = Vector3.zero;

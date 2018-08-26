@@ -13,23 +13,21 @@ public class Waypoint : ScriptableObject
     public Unit target;
 
     public Waypoint() { }
-    public Waypoint(int type, int apCost, Vector3 pos)
-    {
-        this.type = type;
-        this.apCost = apCost;
-        this.pos = pos;
-    }
 }
 
 public class PlayerController : MonoBehaviour
 {
     public int team = 0;
+    public GameObject waypointMarker;
+
+    bool isExecuting = false;
     Unit selectedUnit;
     List<Waypoint> waypoints = new List<Waypoint>();
-    bool isExecuting = false;
-    public GameObject waypointMarker;
+    List<Unit> teamOneList = new List<Unit>();
+    List<Unit> teamTwoList = new List<Unit>();
     GameObject canvas;
     GameObject apCost;
+    bool isInverse = true;
 
     void Awake()
     {
@@ -37,23 +35,59 @@ public class PlayerController : MonoBehaviour
         apCost = GameObject.Find("APCostText");
     }
 
-	void Start ()
+    void Start()
     {
-		
-	}
+        Unit[] units = FindObjectsOfType<Unit>();
+        for (int i = 0; i < units.Length; i++)
+        {
+            if (units[i].gameObject.layer == 10)
+            {
+                teamOneList.Add(units[i]);
+            }
+            else if (units[i].gameObject.layer == 11)
+            {
+                teamTwoList.Add(units[i]);
+            }
+        }
+    }
+
+    public void EndTurn() //Swap unit layers
+    {
+        for(int i=0;i<teamOneList.Count;i++)
+        {
+            if(isInverse)
+                teamOneList[i].gameObject.layer = 11;
+            else
+                teamOneList[i].gameObject.layer = 10;
+            teamOneList[i].actionPoints = teamOneList[i].maxActionPoints;
+        }
+
+        for (int i=0;i<teamTwoList.Count;i++)
+        {
+            if(isInverse)
+                teamTwoList[i].gameObject.layer = 10;
+            else
+                teamTwoList[i].gameObject.layer = 11;
+            teamTwoList[i].actionPoints = teamTwoList[i].maxActionPoints;
+        }
+
+        isInverse = !isInverse;
+        Debug.Log("Ending turn");
+    }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space)) //Hotkey for executing orders
         {
             Execute();
         }
 
-        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) //Mouse click event as long as it's not over UI
         {
             OnClickCheck();
         }
-        if(Input.GetMouseButtonDown(1))
+
+        if(Input.GetMouseButtonDown(1)) //Remove waypoint/deselect
         {
             if(waypoints.Count>1)
             {
@@ -68,30 +102,36 @@ public class PlayerController : MonoBehaviour
                 selectedUnit = null;
             }
         }
-        if(selectedUnit && !isExecuting)
-        {
-            apCost.transform.position = Input.mousePosition;
-            int cost=0;
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit, 100f))
-            {
-                if (hit.transform.gameObject.layer == 9) //hover on floor
-                {
-                    Waypoint lastMovePoint = GetLastMovePoint();
-                    cost = Mathf.RoundToInt(Vector3.Distance(lastMovePoint.pos, hit.point));
-                    apCost.GetComponent<Text>().text = "AP Cost: " + cost;
-                }
-                else if (hit.transform.gameObject.layer == 11) //hover on enemy
-                {
-                    apCost.GetComponent<Text>().text = "AP Cost: " + 10;
-                }
-            }
 
-            }
+        if(selectedUnit && !isExecuting) //Mouse following AP indicator
+        {
+            APIndicator();
+        }
+
         if(isExecuting)
         {
             Executing();
+        }
+    }
+
+    void APIndicator()
+    {
+        apCost.transform.position = Input.mousePosition;
+        int cost = 0;
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 100f))
+        {
+            if (hit.transform.gameObject.layer == 9) //hover on floor
+            {
+                Waypoint lastMovePoint = GetLastMovePoint();
+                cost = Mathf.RoundToInt(Vector3.Distance(lastMovePoint.pos, hit.point));
+                apCost.GetComponent<Text>().text = "AP Cost: " + cost;
+            }
+            else if (hit.transform.gameObject.layer == 11) //hover on enemy
+            {
+                apCost.GetComponent<Text>().text = "AP Cost: " + 10;
+            }
         }
     }
 
