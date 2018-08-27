@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Weapon
+{
+    public int weaponType = 0;
+    public int damage;
+    public int accuracy;
+}
+
+
 public class Unit : MonoBehaviour
 {
     public string unitName;
@@ -24,5 +32,12 @@ public class Unit : MonoBehaviour
     public void Move(Vector3 targetPos)
     {
         movePos = targetPos;
+    }
+
+    public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
+    {
+
+        defender.health -= attacker.attack;
+        Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }
 }

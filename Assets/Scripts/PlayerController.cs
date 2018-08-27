@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
             }
             else if(waypoints[0].type==1)
             {
-                Attack(selectedUnit, waypoints[0].target);
+                selectedUnit.Attack(selectedUnit, waypoints[0].target);
                 Waypoint temp = waypoints[0];
                 Destroy(temp.waypointMarker);
                 Destroy(temp);
@@ -209,13 +209,14 @@ public class PlayerController : MonoBehaviour
                             marker.transform.SetParent(canvas.transform);
                             temp.type = 0;
                             temp.apCost = Mathf.RoundToInt(Vector3.Distance(lastMovePoint.pos, hit.point));
-                            temp.pos = hit.point;
+                            temp.pos = hit.point + Vector3.up * 0.5f;
                             temp.waypointMarker = marker;
                             waypoints.Add(temp);
                             //selectedUnit.Move(hit.point);
                             selectedUnit.actionPoints -= temp.apCost;
                             marker.GetComponent<WaypointMarker>().pos = temp.pos;
-                            marker.GetComponent<WaypointMarker>().SetInfo("AP Cost : " + temp.apCost + "\nAP Rem : " + selectedUnit.actionPoints);
+                            marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : MOVE\nAP Cost : " + temp.apCost + "\nAP Rem : " + selectedUnit.actionPoints);
+                            lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().next = marker.GetComponent<WaypointMarker>();
                             Debug.Log("Move Order Set");
                         }
                         else
@@ -231,21 +232,32 @@ public class PlayerController : MonoBehaviour
                     {
                         if (HasPointsToAttack(selectedUnit)) //add create waypoint method
                         {
-                            Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
-                            GameObject marker = Instantiate(waypointMarker);
-                            marker.transform.SetParent(canvas.transform);
-                            temp.type = 1;
-                            temp.apCost = 10;
-                            temp.waypointMarker = marker;
-                            temp.target = hit.transform.GetComponent<Unit>();
-                            waypoints.Add(temp);
-                            //selectedUnit.Move(hit.point);
-                            selectedUnit.actionPoints -= 10;
-                            marker.GetComponent<WaypointMarker>().pos = hit.point;
-                            marker.GetComponent<WaypointMarker>().SetInfo("AP Cost : " + temp.apCost + "\nAP Rem : " + selectedUnit.actionPoints);
+                            Waypoint lastMovePoint = GetLastMovePoint();
+                            lastMovePoint.pos = lastMovePoint.pos + Vector3.up * 0.5f;
 
-                            //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
-                            Debug.Log("Attack Order Given");
+                            if (!Physics.Raycast(lastMovePoint.pos,hit.transform.position - lastMovePoint.pos, Vector3.Distance(lastMovePoint.pos, hit.transform.position), 1 << 9))
+                            {
+                                Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
+                                GameObject marker = Instantiate(waypointMarker);
+                                marker.transform.SetParent(canvas.transform);
+                                temp.type = 1;
+                                temp.apCost = 10;
+                                temp.waypointMarker = marker;
+                                temp.target = hit.transform.GetComponent<Unit>();
+                                waypoints.Add(temp);
+                                //selectedUnit.Move(hit.point);
+                                selectedUnit.actionPoints -= 10;
+                                marker.GetComponent<WaypointMarker>().pos = hit.point;
+                                marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : ATK\nAP Cost : " + temp.apCost + "\nAP Rem : " + selectedUnit.actionPoints);
+                                lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().atk = marker.GetComponent<WaypointMarker>();
+
+                                //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
+                                Debug.Log("Attack Order Given");
+                            }
+                            else
+                            {
+                                Debug.Log("There is something in the way");
+                            }
                         }
                         else
                         {
@@ -269,11 +281,14 @@ public class PlayerController : MonoBehaviour
         ClearWaypoints();
         selectedUnit = unit;
         Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
+        GameObject marker = Instantiate(waypointMarker);
+        marker.transform.SetParent(canvas.transform);
+        temp.waypointMarker = marker;
         temp.type = 0;
         temp.apCost = 0;
-        temp.pos = selectedUnit.transform.position;
+        temp.pos = selectedUnit.transform.position + Vector3.up * 0.5f;
         waypoints.Add(temp);
-
+        marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : START\nAP : " + selectedUnit.actionPoints);
         Debug.Log("Unit Selected");
     }
 
@@ -296,11 +311,5 @@ public class PlayerController : MonoBehaviour
     bool HasPointsToAttack(Unit unit)
     {
         return unit.actionPoints >= 10; //arbitrary value, change to check weapon AP usage later
-    }
-
-    void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
-    {
-        defender.health -= attacker.attack;
-        Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }
 }
