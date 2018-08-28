@@ -31,13 +31,14 @@ public class Unit : MonoBehaviour
 
     public void Move(Vector3 targetPos)
     {
+        transform.LookAt(new Vector3(targetPos.x, transform.position.y, targetPos.z));
         movePos = targetPos;
     }
 
-    public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
+    public void Attack(Unit defender) //Just reduces health, add things like accuracy and rng later
     {
-
-        defender.health -= attacker.attack;
-        Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
+        transform.LookAt(new Vector3(defender.transform.position.x, transform.position.y, defender.transform.position.z));
+        defender.health -= attack;
+        Debug.Log(unitName + " Attacks " + defender.unitName + " For " + attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }
 }

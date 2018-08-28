@@ -21,7 +21,7 @@ public class WaypointMarker : MonoBehaviour
     void Update()
     {
         transform.position = Camera.main.WorldToScreenPoint(pos);
-        if(next)
+        if(next) //Line renderer positions
         {
             lr.SetPosition(0, pos);
             lr.SetPosition(1, next.pos);
