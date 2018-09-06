@@ -31,12 +31,13 @@ public class Unit : MonoBehaviour
 
     public void Move(Vector3 targetPos)
     {
+        transform.LookAt(targetPos); //Temporary fix, need to lock and lerp rotation
         movePos = targetPos;
     }
 
     public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
     {
-
+        transform.LookAt(defender.transform.position); //Temporary fix, need to lock and lerp rotation
         defender.health -= attacker.attack;
         Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }
