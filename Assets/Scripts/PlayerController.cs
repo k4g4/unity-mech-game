@@ -96,30 +96,35 @@ public class PlayerController : MonoBehaviour
             if(waypoints.Count>1)
             {
                 selectedUnit.actionPoints += waypoints[waypoints.Count - 1].apCost;
-                Waypoint temp = waypoints[waypoints.Count - 1];
-                Destroy(temp.waypointMarker);
-                Destroy(temp);
-                waypoints.RemoveAt(waypoints.Count-1);
+                RemoveWaypoint(waypoints.Count - 1);
             }
             else
             {
+                RemoveWaypoint(0);
                 selectedUnit = null;
             }
         }
 
         if(selectedUnit && !isExecuting) //Mouse following AP indicator
         {
+            if (!apCost.activeInHierarchy)
+                apCost.SetActive(true);
             APIndicator();
         }
 
         if(isExecuting)
         {
+            if (apCost.activeInHierarchy)
+                apCost.SetActive(false);
             Executing();
         }
     }
 
     void APIndicator()
     {
+        if (waypoints.Count < 1)
+            return;
+
         apCost.transform.position = Input.mousePosition;
         int cost = 0;
         RaycastHit hit;
@@ -145,21 +150,18 @@ public class PlayerController : MonoBehaviour
     {
         if (waypoints.Count > 0)
         {
-            if(waypoints[0].type==0)
+            if (waypoints[0].type == 0)
             {
                 cc.FollowUnit(selectedUnit);
                 selectedUnit.Move(waypoints[0].pos);
                 if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.01f)
                 {
-                    Waypoint temp = waypoints[0];
-                    Destroy(temp.waypointMarker);
-                    Destroy(temp);
-                    waypoints.RemoveAt(0);
+                    RemoveWaypoint(0);
                 }
             }
-            else if(waypoints[0].type==1)
+            else if (waypoints[0].type == 1)
             {
-                if(!isAttackAnim)
+                if (!isAttackAnim)
                 {
                     Timing.RunCoroutine(AttackAnim());
                     isAttackAnim = true;
@@ -212,6 +214,38 @@ public class PlayerController : MonoBehaviour
         return waypoints[0];
     }
 
+    void AddWaypoint(int type, int apCost, Vector3 pos, string info, Unit target) //Creates a waypoint based on type
+    {
+        Waypoint lastMovePoint = GetLastMovePoint();
+        //lastMovePoint.pos = lastMovePoint.pos;
+        Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
+        GameObject marker = Instantiate(waypointMarker);
+        marker.transform.SetParent(canvas.transform);
+        temp.type = type;
+        temp.apCost = apCost;
+        temp.pos = pos;
+        temp.waypointMarker = marker;
+        waypoints.Add(temp);
+        //selectedUnit.Move(hit.point);
+        selectedUnit.actionPoints -= temp.apCost;
+        marker.GetComponent<WaypointMarker>().pos = temp.pos;
+        marker.GetComponent<WaypointMarker>().SetInfo(info);
+        if (type == 0)
+            lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().next = marker.GetComponent<WaypointMarker>();
+        else if (type == 1)
+            lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().atk = marker.GetComponent<WaypointMarker>();
+        if (target)
+            temp.target = target;
+    }
+
+    void RemoveWaypoint(int i)
+    {
+        Waypoint temp = waypoints[i];
+        Destroy(temp.waypointMarker);
+        Destroy(temp);
+        waypoints.RemoveAt(i);
+    }
+
     void OnClickCheck()
     {
         RaycastHit hit;
@@ -226,22 +260,21 @@ public class PlayerController : MonoBehaviour
                     {
 
                         Waypoint lastMovePoint = GetLastMovePoint();
-                        if (HasPointsToMove(selectedUnit, lastMovePoint.pos, hit.point)) //Change to check on a 2d plane only later
+                        Waypoint temp = new Waypoint();
+                        temp.pos = lastMovePoint.pos + Vector3.up * 0.5f;
+                        //lastMovePoint.pos = lastMovePoint.pos + Vector3.up * 0.5f;
+                        if (HasPointsToMove(selectedUnit, temp.pos, hit.point)) //Change to check on a 2d plane only later
                         {
-                            Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
-                            GameObject marker = Instantiate(waypointMarker);
-                            marker.transform.SetParent(canvas.transform);
-                            temp.type = 0;
-                            temp.apCost = Mathf.RoundToInt(Vector3.Distance(lastMovePoint.pos, hit.point));
-                            temp.pos = hit.point + Vector3.up * 0.5f;
-                            temp.waypointMarker = marker;
-                            waypoints.Add(temp);
-                            //selectedUnit.Move(hit.point);
-                            selectedUnit.actionPoints -= temp.apCost;
-                            marker.GetComponent<WaypointMarker>().pos = temp.pos;
-                            marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : MOVE\nAP Cost : " + temp.apCost + "\nAP Rem : " + selectedUnit.actionPoints);
-                            lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().next = marker.GetComponent<WaypointMarker>();
-                            Debug.Log("Move Order Set");
+                            if (!Physics.Raycast(temp.pos, (hit.point + Vector3.up * 0.5f) - temp.pos, Vector3.Distance(temp.pos, hit.point + Vector3.up * 0.5f), 1 << 9))
+                            {
+                                string info = waypoints.Count + " : MOVE\nAP Cost : " + Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)) + "\nAP Rem : " + selectedUnit.actionPoints;
+                                AddWaypoint(0, Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)), hit.point + Vector3.up * 0.5f, info, null); //check vector up displacement, increases by half meter every click
+                                Debug.Log("Move Order Set");
+                            }
+                            else
+                            {
+                                Debug.Log("There is something in the way");
+                            }
                         }
                         else
                         {
@@ -257,23 +290,13 @@ public class PlayerController : MonoBehaviour
                         if (HasPointsToAttack(selectedUnit)) //add create waypoint method
                         {
                             Waypoint lastMovePoint = GetLastMovePoint();
-                            lastMovePoint.pos = lastMovePoint.pos + Vector3.up * 0.5f;
+                            Waypoint temp = new Waypoint();
+                            temp.pos = lastMovePoint.pos + Vector3.up * 0.5f;
 
-                            if (!Physics.Raycast(lastMovePoint.pos,hit.transform.position - lastMovePoint.pos, Vector3.Distance(lastMovePoint.pos, hit.transform.position), 1 << 9))
+                            if (!Physics.Raycast(temp.pos,hit.transform.position - temp.pos, Vector3.Distance(temp.pos, hit.transform.position), 1 << 9))
                             {
-                                Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
-                                GameObject marker = Instantiate(waypointMarker);
-                                marker.transform.SetParent(canvas.transform);
-                                temp.type = 1;
-                                temp.apCost = 10;
-                                temp.waypointMarker = marker;
-                                temp.target = hit.transform.GetComponent<Unit>();
-                                waypoints.Add(temp);
-                                //selectedUnit.Move(hit.point);
-                                selectedUnit.actionPoints -= 10;
-                                marker.GetComponent<WaypointMarker>().pos = hit.point;
-                                marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : ATK\nAP Cost : " + temp.apCost + "\nAP Rem : " + selectedUnit.actionPoints);
-                                lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().atk = marker.GetComponent<WaypointMarker>();
+                                string info = waypoints.Count + " : ATK\nAP Cost : " + 10 + "\nAP Rem : " + selectedUnit.actionPoints;
+                                AddWaypoint(1, 10, hit.point + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
 
                                 //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
                                 Debug.Log("Attack Order Given");
