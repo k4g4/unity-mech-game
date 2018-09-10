@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public float speed;
     bool isFollowing = false;
     public Vector3 originalPos;
+    Vector3 targetPos;
 
 	void Update ()
     {
@@ -16,7 +17,7 @@ public class CameraController : MonoBehaviour
 
     public void FollowUnit(Unit unit)
     {
-        transform.position = unit.transform.position + Vector3.up * 5 - Vector3.forward * 2;
+        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 5 - Vector3.forward * 2, speed * Time.deltaTime);
     }
 
     public void AttackCamera(Unit attacker, Unit defender, int type)

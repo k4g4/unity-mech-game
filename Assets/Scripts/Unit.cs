@@ -2,14 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon
-{
-    public int weaponType = 0;
-    public int damage;
-    public int accuracy;
-}
-
-
 public class Unit : MonoBehaviour
 {
     public string unitName;
@@ -19,7 +11,20 @@ public class Unit : MonoBehaviour
     public int maxActionPoints;
     public int attack;
 
+    List<Weapon> weapons = new List<Weapon>();
+
     Vector3 movePos = Vector3.zero;
+
+    void Awake()
+    {
+        foreach(Transform child in transform)
+        {
+            if(child.GetComponent<Weapon>())
+            {
+                weapons.Add(child.GetComponent<Weapon>());
+            }
+        }
+    }
 
     void Update()
     {
@@ -38,7 +43,8 @@ public class Unit : MonoBehaviour
     public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
     {
         transform.LookAt(defender.transform.position); //Temporary fix, need to lock and lerp rotation
-        defender.health -= attacker.attack;
+        weapons[0].Fire(defender);
+        //defender.health -= attacker.attack;
         Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }
 }

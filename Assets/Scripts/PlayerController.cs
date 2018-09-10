@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
                 selectedUnit.actionPoints += waypoints[waypoints.Count - 1].apCost;
                 RemoveWaypoint(waypoints.Count - 1);
             }
-            else
+            else if(selectedUnit)
             {
                 RemoveWaypoint(0);
                 selectedUnit = null;
@@ -181,11 +181,8 @@ public class PlayerController : MonoBehaviour
         isExecuting = false;
         cc.AttackCamera(selectedUnit, waypoints[0].target, 0);
         selectedUnit.Attack(selectedUnit, waypoints[0].target);
-        Waypoint temp = waypoints[0];
-        Destroy(temp.waypointMarker);
-        Destroy(temp);
-        waypoints.RemoveAt(0);
-        yield return Timing.WaitForSeconds(2f);
+        RemoveWaypoint(0);
+        yield return Timing.WaitForSeconds(5f);
         cc.ResetCamera();
         isAttackAnim = false;
         isExecuting = true;
