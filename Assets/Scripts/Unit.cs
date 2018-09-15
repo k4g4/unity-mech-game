@@ -10,38 +10,81 @@ public class Unit : MonoBehaviour
     public int actionPoints;
     public int maxActionPoints;
     public int attack;
+    public float walkSpeed = 2f;
 
     List<Weapon> weapons = new List<Weapon>();
 
     Vector3 movePos = Vector3.zero;
+    Animator anim;
 
     void Awake()
     {
-        foreach(Transform child in transform)
+        anim = transform.GetChild(0).GetComponent<Animator>();
+        SetWeapons();
+    }
+
+    void SetWeapons()
+    {
+        foreach (Transform child in transform)
         {
-            if(child.GetComponent<Weapon>())
+            if (child.GetComponent<Weapon>())
             {
                 weapons.Add(child.GetComponent<Weapon>());
             }
         }
+
+        for (int i=0;i<weapons.Count;i++)
+        {
+            switch (weapons[i].partPos)
+            {
+                case 0:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LArm"));
+                    weapons[i].transform.localPosition = Vector3.zero;
+                    break;
+                case 1:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RArm"));
+                    weapons[i].transform.localPosition = Vector3.zero;
+                    break;
+                case 2:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LShoulder"));
+                    weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.right * 0.0004f;
+                    break;
+                case 3:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RShoulder"));
+                    weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.left * 0.0004f;
+                    break;
+                default:
+                    Debug.Log("Invalid part position");
+                    break;
+            }
+        }
     }
+
+
 
     void Update()
     {
         if(movePos != Vector3.zero)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, movePos, 5 * Time.deltaTime);
+        {      
+            transform.position = Vector3.MoveTowards(transform.position, movePos, walkSpeed * Time.deltaTime);
         }
     }
 
     public void Move(Vector3 targetPos)
     {
+        IsWalking(true);
         transform.LookAt(targetPos); //Temporary fix, need to lock and lerp rotation
         movePos = targetPos;
     }
 
+    public void IsWalking(bool walking)
+    {
+        anim.SetBool("isWalking", walking);
+    }
+
     public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
     {
+        IsWalking(false);
         transform.LookAt(defender.transform.position); //Temporary fix, need to lock and lerp rotation
         weapons[0].Fire(defender);
         //defender.health -= attacker.attack;

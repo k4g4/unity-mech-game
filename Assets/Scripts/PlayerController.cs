@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            selectedUnit.IsWalking(false);
             selectedUnit = null;
             isExecuting = false;
             cc.ResetCamera();
@@ -179,10 +180,10 @@ public class PlayerController : MonoBehaviour
     IEnumerator<float> AttackAnim()
     {
         isExecuting = false;
-        cc.AttackCamera(selectedUnit, waypoints[0].target, 0);
         selectedUnit.Attack(selectedUnit, waypoints[0].target);
+        cc.AttackCamera(selectedUnit, waypoints[0].target, 0);
         RemoveWaypoint(0);
-        yield return Timing.WaitForSeconds(5f);
+        yield return Timing.WaitForSeconds(6f);
         cc.ResetCamera();
         isAttackAnim = false;
         isExecuting = true;
@@ -217,7 +218,7 @@ public class PlayerController : MonoBehaviour
         //lastMovePoint.pos = lastMovePoint.pos;
         Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
         GameObject marker = Instantiate(waypointMarker);
-        marker.transform.SetParent(canvas.transform);
+        //marker.transform.SetParent(canvas.transform);
         temp.type = type;
         temp.apCost = apCost;
         temp.pos = pos;
@@ -228,9 +229,15 @@ public class PlayerController : MonoBehaviour
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(info);
         if (type == 0)
+        {
             lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().next = marker.GetComponent<WaypointMarker>();
+            marker.GetComponent<WaypointMarker>().SetColor(true);
+        }
         else if (type == 1)
+        {
             lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().atk = marker.GetComponent<WaypointMarker>();
+            marker.GetComponent<WaypointMarker>().SetColor(false);
+        }
         if (target)
             temp.target = target;
     }
@@ -293,7 +300,7 @@ public class PlayerController : MonoBehaviour
                             if (!Physics.Raycast(temp.pos,hit.transform.position - temp.pos, Vector3.Distance(temp.pos, hit.transform.position), 1 << 9))
                             {
                                 string info = waypoints.Count + " : ATK\nAP Cost : " + 10 + "\nAP Rem : " + selectedUnit.actionPoints;
-                                AddWaypoint(1, 10, hit.point + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
+                                AddWaypoint(1, 10, hit.transform.position + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
 
                                 //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
                                 Debug.Log("Attack Order Given");
@@ -330,7 +337,7 @@ public class PlayerController : MonoBehaviour
         temp.waypointMarker = marker;
         temp.type = 0;
         temp.apCost = 0;
-        temp.pos = selectedUnit.transform.position + Vector3.up * 0.5f;
+        temp.pos = selectedUnit.transform.position;
         waypoints.Add(temp);
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : START\nAP : " + selectedUnit.actionPoints);
