@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     GameObject mouseInfoBoxBG;
-    Text mouseInfoBoxText;
-
+    Text mouseInfoBoxText,unitInfoText;
+    public Unit selectedUnit;
     void Awake()
     {
         mouseInfoBoxBG = GameObject.Find("MouseInfoBoxBG");
         mouseInfoBoxText = GameObject.Find("MouseInfoBoxText").GetComponent<Text>();
-
+        unitInfoText = GameObject.Find("UnitInfoText").GetComponent<Text>();
     }
 
 	
@@ -29,6 +29,13 @@ public class UIController : MonoBehaviour
 	void Update ()
     {
         MouseRaycast();
+        if(selectedUnit)
+        {
+            unitInfoText.text = "Unit Info:"
+                                + "\nName : " + selectedUnit.unitName
+                                + "\nHealth : " + selectedUnit.health + "\\" + selectedUnit.maxHealth
+                                + "\nAP : " + selectedUnit.actionPoints + "\\" + selectedUnit.maxActionPoints;
+        }
 	}
 
     void MouseRaycast() //Check what mouse is hitting

@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     bool isExecuting = false;
     Unit selectedUnit;
     CameraController cc;
+    UIController uic;
     List<Waypoint> waypoints = new List<Waypoint>();
     List<Unit> teamOneList = new List<Unit>();
     List<Unit> teamTwoList = new List<Unit>();
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        uic = FindObjectOfType<UIController>();
         cc = FindObjectOfType<CameraController>();
         canvas = GameObject.Find("Canvas");
         apCost = GameObject.Find("APCostText");
@@ -341,6 +343,7 @@ public class PlayerController : MonoBehaviour
         waypoints.Add(temp);
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : START\nAP : " + selectedUnit.actionPoints);
+        uic.selectedUnit = unit;
         Debug.Log("Unit Selected");
     }
 
