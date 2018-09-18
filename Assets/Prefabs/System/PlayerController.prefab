@@ -51,4 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18874ab65f4468048877503c6efd476c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 1
+  team: 0
+  waypointMarker: {fileID: 1992539322941408, guid: d173d4c119c9e754b93a5db671c2fc8a,
+    type: 2}

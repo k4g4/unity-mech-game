@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
 
         isInverse = !isInverse;
         ClearWaypoints();
+        //cc.FlipCamera();
         Debug.Log("Ending turn");
     }
 
@@ -156,8 +157,9 @@ public class PlayerController : MonoBehaviour
             {
                 cc.FollowUnit(selectedUnit);
                 selectedUnit.Move(waypoints[0].pos);
-                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.01f)
+                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.05f)
                 {
+                    selectedUnit.isWalking = false;
                     RemoveWaypoint(0);
                 }
             }
@@ -262,6 +264,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (team == 0) //TODO : Swap team layers when hotseat multiplayer to avoid double code.
                 {
+                    Debug.Log(hit.transform.gameObject.layer);
                     if (hit.transform.gameObject.layer == 9) //Clicked on floor
                     {
 

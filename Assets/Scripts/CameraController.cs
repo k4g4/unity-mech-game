@@ -23,6 +23,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public void FlipCamera()
+    {
+        transform.rotation = Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y + 180, 0));
+    }
+
     public void FollowUnit(Unit unit)
     {
         transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 2 - Vector3.forward, speed * Time.deltaTime);

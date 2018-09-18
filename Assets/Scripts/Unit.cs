@@ -13,13 +13,17 @@ public class Unit : MonoBehaviour
     public float walkSpeed = 2f;
 
     List<Weapon> weapons = new List<Weapon>();
-
+    public bool isWalking = false;
     Vector3 movePos = Vector3.zero;
     Animator anim;
 
     void Awake()
     {
         anim = transform.GetChild(0).GetComponent<Animator>();
+    }
+
+    void Start()
+    {
         SetWeapons();
     }
 
@@ -64,14 +68,21 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
-        if(movePos != Vector3.zero)
-        {      
-            transform.position = Vector3.MoveTowards(transform.position, movePos, walkSpeed * Time.deltaTime);
+        if(isWalking)
+        {
+            //transform.position = Vector3.MoveTowards(transform.position, movePos, walkSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+            RaycastHit hit;
+            if(Physics.Raycast(transform.position,-Vector3.up,out hit,5,1<<9))
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + 0.5f, transform.position.z);
+            }
         }
     }
 
     public void Move(Vector3 targetPos)
     {
+        isWalking = true;
         IsWalking(true);
         transform.LookAt(targetPos); //Temporary fix, need to lock and lerp rotation
         movePos = targetPos;
