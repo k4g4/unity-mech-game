@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
             {
                 cc.FollowUnit(selectedUnit);
                 selectedUnit.Move(waypoints[0].pos);
-                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.05f)
+                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.1f)
                 {
                     selectedUnit.isWalking = false;
                     RemoveWaypoint(0);
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
     {
         isExecuting = false;
         selectedUnit.Attack(selectedUnit, waypoints[0].target);
-        cc.AttackCamera(selectedUnit, waypoints[0].target, 0);
+        cc.AttackCamera(selectedUnit, waypoints[0].target, selectedUnit.weapons[0].weaponType);
         RemoveWaypoint(0);
         yield return Timing.WaitForSeconds(6f);
         cc.ResetCamera();

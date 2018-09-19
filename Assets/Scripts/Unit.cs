@@ -12,7 +12,7 @@ public class Unit : MonoBehaviour
     public int attack;
     public float walkSpeed = 2f;
 
-    List<Weapon> weapons = new List<Weapon>();
+    public List<Weapon> weapons = new List<Weapon>();
     public bool isWalking = false;
     Vector3 movePos = Vector3.zero;
     Animator anim;

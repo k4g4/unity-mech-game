@@ -45,8 +45,7 @@ public class CameraController : MonoBehaviour
                     Timing.RunCoroutine(GunCameraTwo(attacker, defender));
                 break;
             case 1:
-                transform.position = attacker.transform.position + Vector3.up * 1 - Vector3.forward * 2;
-                transform.GetChild(0).transform.LookAt(defender.transform);
+                Timing.RunCoroutine(GunCameraOne(attacker, defender));
                 break;
             default:
                 Debug.Log("Missing attack camera type");

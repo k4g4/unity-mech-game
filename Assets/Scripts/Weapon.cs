@@ -67,8 +67,8 @@ public class Weapon : MonoBehaviour
     IEnumerator<float> FireShotgun(Unit tgt)
     {
         yield return Timing.WaitForSeconds(2f);
-        transform.GetChild(0).GetComponent<ParticleSystem>().Emit(burstFire); //Emitter
         transform.GetChild(0).GetComponent<ParticleSystem>().Emit(1); //Muzzle
+        transform.GetChild(1).GetComponent<ParticleSystem>().Emit(burstFire); //Emitter
         for (int i = 0; i < burstFire; i++)
         {
             //ps.Emit(1);
