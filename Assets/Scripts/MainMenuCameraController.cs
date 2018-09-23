@@ -6,7 +6,7 @@ public class MainMenuCameraController : MonoBehaviour
 {
     public float moveSpeed, rotSpeed;
 
-    Vector3 targetPos;
+    Vector3 targetPos = new Vector3(1.3f,7f,-10f);
     Quaternion targetRot;
     List<GameObject> menuButtons = new List<GameObject>();
     List<GameObject> menuBG = new List<GameObject>();
@@ -20,12 +20,12 @@ public class MainMenuCameraController : MonoBehaviour
         menuButtons.Add(GameObject.Find("ExitButton"));
         menuButtons.Add(GameObject.Find("ArmoryButton"));
         menuButtons.Add(GameObject.Find("FactoryButton"));
-        menuButtons.Add(GameObject.Find("SkirmishButton"));
+        menuButtons.Add(GameObject.Find("SortieButton"));
 
         menuBG.Add(GameObject.Find("ExitBG"));
         menuBG.Add(GameObject.Find("FactoryBG"));
         menuBG.Add(GameObject.Find("ArmoryBG"));
-        menuBG.Add(GameObject.Find("SkirmishBG"));
+        menuBG.Add(GameObject.Find("SortieBG"));
 
         HideAllMenus();
         ShowAllMenuButtons();

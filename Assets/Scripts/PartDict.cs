@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PartDict : MonoBehaviour
 {
+    public static PartDict instance = null;
 
     Dictionary<int, GameObject> partDict = new Dictionary<int, GameObject>();
 
@@ -11,6 +12,16 @@ public class PartDict : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+
         partDict.Add(0, ac231);
         partDict.Add(1, ac234);
         partDict.Add(2, guidMiss);

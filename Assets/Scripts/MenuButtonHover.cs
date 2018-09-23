@@ -21,7 +21,8 @@ public class MenuButtonHover : MonoBehaviour
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        mmcc.MoveCamera(targetPos, targetRot);
+        if(menuID >= 0)
+            mmcc.MoveCamera(targetPos, targetRot);
     }
 
     public void OnPointerClick(PointerEventData eventData)

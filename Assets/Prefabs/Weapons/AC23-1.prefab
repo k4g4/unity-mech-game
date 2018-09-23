@@ -267,12 +267,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wepName: AC23-1
   maxDmg: 5
   accuracy: 75
   weaponType: 0
   burstFire: 5
   fireDelay: 0.1
-  partPos: 0
+  partPos: 2
 --- !u!198 &198114877611862268
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -5579,7 +5580,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -10112,7 +10113,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -14649,7 +14650,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0
       minScalar: 10
       maxCurve:
         serializedVersion: 2

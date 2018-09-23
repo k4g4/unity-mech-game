@@ -93,11 +93,11 @@ public class Unit : MonoBehaviour
         anim.SetBool("isWalking", walking);
     }
 
-    public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
+    public void Attack(Unit attacker, Unit defender, int wep) //Just reduces health, add things like accuracy and rng later
     {
         IsWalking(false);
         transform.LookAt(defender.transform.position); //Temporary fix, need to lock and lerp rotation
-        weapons[0].Fire(defender);
+        weapons[wep].Fire(defender);
         //defender.health -= attacker.attack;
         Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }

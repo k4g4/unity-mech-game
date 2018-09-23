@@ -5,12 +5,19 @@ using MEC;
 
 public class Weapon : MonoBehaviour
 {
+    public string wepName = "Untitled";
     public int maxDmg; 
     public int accuracy; //out of 100
     public int weaponType = 0;
     public int burstFire = 10;
     public float fireDelay = 0.1f;
     public int partPos = 0; //0 = LArm, 1 = RArm, 2 = LShoulder, 3 = RShoulder
+    UIController uic;
+
+    void Awake()
+    {
+        uic = FindObjectOfType<UIController>();
+    }
     
     //ParticleSystem ps;
 
@@ -57,8 +64,13 @@ public class Weapon : MonoBehaviour
             int rand = Random.Range(0, 100);
             if(rand<accuracy)
             {
-                tgt.health -= Random.Range(maxDmg / 2, maxDmg);
-                Debug.Log("hit");
+                int damage = Random.Range(maxDmg / 2, maxDmg);
+                tgt.health -= damage;
+                uic.Damage(tgt, damage + "");
+            }
+            else
+            {
+                uic.Damage(tgt, "miss");
             }
             yield return Timing.WaitForSeconds(fireDelay);
         }
@@ -69,14 +81,21 @@ public class Weapon : MonoBehaviour
         yield return Timing.WaitForSeconds(2f);
         transform.GetChild(0).GetComponent<ParticleSystem>().Emit(1); //Muzzle
         transform.GetChild(1).GetComponent<ParticleSystem>().Emit(burstFire); //Emitter
+        transform.GetChild(2).GetComponent<ParticleSystem>().Emit(2);
         for (int i = 0; i < burstFire; i++)
         {
             //ps.Emit(1);
             int rand = Random.Range(0, 100);
             if (rand < accuracy)
             {
-                tgt.health -= Random.Range(maxDmg / 2, maxDmg);
+                int damage = Random.Range(maxDmg / 2, maxDmg);
+                tgt.health -= damage;
+                uic.Damage(tgt, damage+"");
                 Debug.Log("hit");
+            }
+            else
+            {
+                uic.Damage(tgt, "miss");
             }
             yield return Timing.WaitForSeconds(fireDelay);
         }

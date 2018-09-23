@@ -792,7 +792,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 4809008838127250}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3840
   stopNaNPropagation: 1
   antialiasingMode: 1
   temporalAntialiasing:
@@ -848,6 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedUnit: {fileID: 0}
+  hitDamage: {fileID: 1791238443485052, guid: 22abbc5a086cdc444bee9d49aa8e2153, type: 2}
 --- !u!114 &114519660614874878
 MonoBehaviour:
   m_ObjectHideFlags: 1

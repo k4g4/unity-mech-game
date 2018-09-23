@@ -8,11 +8,16 @@ public class UIController : MonoBehaviour
     GameObject mouseInfoBoxBG;
     Text mouseInfoBoxText,unitInfoText;
     public Unit selectedUnit;
+    public GameObject hitDamage;
+    Canvas canvas;
+    
+
     void Awake()
     {
         mouseInfoBoxBG = GameObject.Find("MouseInfoBoxBG");
         mouseInfoBoxText = GameObject.Find("MouseInfoBoxText").GetComponent<Text>();
         unitInfoText = GameObject.Find("UnitInfoText").GetComponent<Text>();
+        canvas = FindObjectOfType<Canvas>();
     }
 
 	
@@ -37,6 +42,13 @@ public class UIController : MonoBehaviour
                                 + "\nAP : " + selectedUnit.actionPoints + "\\" + selectedUnit.maxActionPoints;
         }
 	}
+
+    public void Damage(Unit tgt, string dam)
+    {
+        GameObject clone = Instantiate(hitDamage, canvas.transform);
+        hitDamage.GetComponent<RectTransform>().position = Camera.main.WorldToViewportPoint(tgt.transform.position) + new Vector3(Random.Range(-40f,40f),Random.Range(0f,80f),Random.Range(-40f,40f));
+        hitDamage.GetComponent<Text>().text = dam;
+    }
 
     void MouseRaycast() //Check what mouse is hitting
     {
