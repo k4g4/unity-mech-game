@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -632,6 +632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728fc79d15125ea44b0b066d25ec4a4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnit: {fileID: 0}
+  hitDamage: {fileID: 0}
 --- !u!4 &795009606
 Transform:
   m_ObjectHideFlags: 0
@@ -778,7 +780,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 67a8052c42b3772489ac0b6e11da43d8, type: 2}
+  - {fileID: 2100000, guid: a762e8b16c8de9644924084852c8f90e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -829,9 +831,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 494d0654a54e59147a36a81ec17b16cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 70
-  height: 70
+  dim: 0
   scale: 10
+  hills: []
 --- !u!1001 &1206493160
 Prefab:
   m_ObjectHideFlags: 0

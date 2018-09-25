@@ -11,7 +11,7 @@ public class Unit : MonoBehaviour
     public int maxActionPoints;
     public int attack;
     public float walkSpeed = 2f;
-
+    public GameObject footprint;
     public List<Weapon> weapons = new List<Weapon>();
     public bool isWalking = false;
     Vector3 movePos = Vector3.zero;

@@ -5,6 +5,8 @@ using MEC;
 
 public class Weapon : MonoBehaviour
 {
+
+    public GameObject hitFX;
     public string wepName = "Untitled";
     public int maxDmg; 
     public int accuracy; //out of 100
@@ -67,6 +69,11 @@ public class Weapon : MonoBehaviour
                 int damage = Random.Range(maxDmg / 2, maxDmg);
                 tgt.health -= damage;
                 uic.Damage(tgt, damage + "");
+                if (hitFX)
+                {
+                    GameObject clone = Instantiate(hitFX);
+                    hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+                }
             }
             else
             {
@@ -84,14 +91,17 @@ public class Weapon : MonoBehaviour
         transform.GetChild(2).GetComponent<ParticleSystem>().Emit(2);
         for (int i = 0; i < burstFire; i++)
         {
-            //ps.Emit(1);
             int rand = Random.Range(0, 100);
             if (rand < accuracy)
             {
                 int damage = Random.Range(maxDmg / 2, maxDmg);
                 tgt.health -= damage;
                 uic.Damage(tgt, damage+"");
-                Debug.Log("hit");
+                if(hitFX)
+                {
+                    GameObject clone = Instantiate(hitFX);
+                    hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+                }
             }
             else
             {
