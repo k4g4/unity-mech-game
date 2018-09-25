@@ -195,6 +195,13 @@ public class PlayerController : MonoBehaviour
         isExecuting = false;
         selectedUnit.Attack(selectedUnit, waypoints[0].target, waypoints[0].wepType);
         cc.AttackCamera(selectedUnit, waypoints[0].target, selectedUnit.weapons[waypoints[0].wepType].weaponType);
+        if(waypoints.Count>1)
+        {
+            if(waypoints[1].type==0)
+            {
+                cc.ResetCamera();
+            }
+        }
         RemoveWaypoint(0);
         yield return Timing.WaitForSeconds(7f);
         isAttackAnim = false;
