@@ -206,6 +206,7 @@ public class PlayerController : MonoBehaviour
         yield return Timing.WaitForSeconds(7f);
         isAttackAnim = false;
         isExecuting = true;
+        cc.ResetCamera();
     }
 
     public void Execute()

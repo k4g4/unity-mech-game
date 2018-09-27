@@ -13847,7 +13847,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
   m_Events:
-  - time: 0.29166666
+  - time: 0.33333334
     functionName: RightFoot
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 876077edc9fb3d94db77ecc3a6b86e70,
@@ -13855,7 +13855,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.875
+  - time: 0.8333333
     functionName: LeftFoot
     data: 
     objectReferenceParameter: {fileID: 11500000, guid: 876077edc9fb3d94db77ecc3a6b86e70,

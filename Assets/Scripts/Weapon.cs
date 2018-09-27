@@ -13,6 +13,7 @@ public class Weapon : MonoBehaviour
     public int weaponType = 0;
     public int burstFire = 10;
     public float fireDelay = 0.1f;
+    public int range = 10;
     public int partPos = 0; //0 = LArm, 1 = RArm, 2 = LShoulder, 3 = RShoulder
     UIController uic;
 
@@ -52,6 +53,12 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    int AccuracyCalc(Unit tgt)
+    {
+        int ans = Mathf.RoundToInt(accuracy + (range - Vector3.Distance(tgt.transform.position,transform.position))*2);
+        return ans;
+    }
+
     IEnumerator<float> FireGun(Unit tgt)
     {
         yield return Timing.WaitForSeconds(2f);
@@ -62,24 +69,30 @@ public class Weapon : MonoBehaviour
                 if (child.GetComponent<ParticleSystem>())
                     child.GetComponent<ParticleSystem>().Emit(1);
             }
+            FireRound(tgt);
             //ps.Emit(1);
-            int rand = Random.Range(0, 100);
-            if(rand<accuracy)
-            {
-                int damage = Random.Range(maxDmg / 2, maxDmg);
-                tgt.health -= damage;
-                uic.Damage(tgt, damage + "");
-                if (hitFX)
-                {
-                    GameObject clone = Instantiate(hitFX);
-                    hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
-                }
-            }
-            else
-            {
-                uic.Damage(tgt, "miss");
-            }
             yield return Timing.WaitForSeconds(fireDelay);
+        }
+    }
+
+    void FireRound(Unit tgt)
+    {
+        int rand = Random.Range(0, 100);
+
+        if (rand < AccuracyCalc(tgt))
+        {
+            int damage = Random.Range(maxDmg / 2, maxDmg);
+            tgt.health -= damage;
+            uic.Damage(tgt, damage + "");
+            if (hitFX)
+            {
+                GameObject clone = Instantiate(hitFX);
+                hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+            }
+        }
+        else
+        {
+            uic.Damage(tgt, "miss");
         }
     }
 
@@ -91,22 +104,7 @@ public class Weapon : MonoBehaviour
         transform.GetChild(2).GetComponent<ParticleSystem>().Emit(2);
         for (int i = 0; i < burstFire; i++)
         {
-            int rand = Random.Range(0, 100);
-            if (rand < accuracy)
-            {
-                int damage = Random.Range(maxDmg / 2, maxDmg);
-                tgt.health -= damage;
-                uic.Damage(tgt, damage+"");
-                if(hitFX)
-                {
-                    GameObject clone = Instantiate(hitFX);
-                    hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
-                }
-            }
-            else
-            {
-                uic.Damage(tgt, "miss");
-            }
+            FireRound(tgt);
             yield return Timing.WaitForSeconds(fireDelay);
         }
     }
