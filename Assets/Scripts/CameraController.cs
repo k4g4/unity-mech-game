@@ -33,6 +33,12 @@ public class CameraController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 2 - Vector3.forward, speed * Time.deltaTime);
     }
 
+    public void FollowUnit(GameObject unit)
+    {
+        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 2 - Vector3.forward, speed * Time.deltaTime);
+    }
+
+
     public void AttackCamera(Unit attacker, Unit defender, int type)
     {
         switch(type)
@@ -47,10 +53,19 @@ public class CameraController : MonoBehaviour
             case 1:
                 Timing.RunCoroutine(GunCameraOne(attacker, defender));
                 break;
+            case 2:
+                Timing.RunCoroutine(MissileCameraOne(attacker, defender));
+                break;
             default:
                 Debug.Log("Missing attack camera type");
                 break;
         }
+    }
+
+
+    IEnumerator<float> MissileCameraOne(Unit atk, Unit def)
+    {
+        yield return Timing.WaitForSeconds(1f);
     }
 
     IEnumerator<float> GunCameraOne(Unit atk, Unit def)

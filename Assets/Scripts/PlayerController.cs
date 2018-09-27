@@ -190,6 +190,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool attackContinue = false;
     IEnumerator<float> AttackAnim()
     {
         isExecuting = false;
@@ -203,15 +204,19 @@ public class PlayerController : MonoBehaviour
             }
         }
         RemoveWaypoint(0);
-        yield return Timing.WaitForSeconds(7f);
+        while(!attackContinue)
+        {
+            yield return Timing.WaitForOneFrame;
+        }
+        //yield return Timing.WaitForSeconds(7f); //change to outside modifiable
         isAttackAnim = false;
         isExecuting = true;
+        attackContinue = false;
         cc.ResetCamera();
     }
 
     public void Execute()
     {
-        Debug.Log("Executing " + waypoints.Count);
         if(waypoints.Count>0)
         {
             cc.originalPos = cc.transform.position;
@@ -280,7 +285,6 @@ public class PlayerController : MonoBehaviour
             {
                 if (team == 0) //TODO : Swap team layers when hotseat multiplayer to avoid double code.
                 {
-                    Debug.Log(hit.transform.gameObject.layer);
                     if (hit.transform.gameObject.layer == 9) //Clicked on floor
                     {
 
@@ -294,7 +298,6 @@ public class PlayerController : MonoBehaviour
                             {
                                 string info = waypoints.Count + " : MOVE\nAP Cost : " + Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)) + "\nAP Rem : " + selectedUnit.actionPoints;
                                 AddWaypoint(0, Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)), hit.point + Vector3.up * 0.5f, info, null); //check vector up displacement, increases by half meter every click
-                                Debug.Log("Move Order Set");
                             }
                             else
                             {
@@ -326,7 +329,6 @@ public class PlayerController : MonoBehaviour
                                 wepSelect.transform.position = Input.mousePosition;
                                 AddWaypoint(1, 10, hit.transform.position + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
                                 //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
-                                Debug.Log("Attack Order Given");
                             }
                             else
                             {

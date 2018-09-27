@@ -5,7 +5,7 @@ using MEC;
 
 public class Weapon : MonoBehaviour
 {
-
+    public GameObject missile;
     public GameObject hitFX;
     public string wepName = "Untitled";
     public int maxDmg; 
@@ -15,11 +15,16 @@ public class Weapon : MonoBehaviour
     public float fireDelay = 0.1f;
     public int range = 10;
     public int partPos = 0; //0 = LArm, 1 = RArm, 2 = LShoulder, 3 = RShoulder
+    public float hitOffset = 0.5f;
     UIController uic;
+    PlayerController pc;
+    CameraController cc;
 
     void Awake()
     {
         uic = FindObjectOfType<UIController>();
+        pc = FindObjectOfType<PlayerController>();
+        cc = FindObjectOfType<CameraController>();
     }
     
     //ParticleSystem ps;
@@ -48,6 +53,9 @@ public class Weapon : MonoBehaviour
             case 1:
                 Timing.RunCoroutine(FireShotgun(tgt));
                 break;
+            case 2:
+                Timing.RunCoroutine(FireGuidedMissile(tgt));
+                break;
             default:
                 break;
         }
@@ -57,6 +65,22 @@ public class Weapon : MonoBehaviour
     {
         int ans = Mathf.RoundToInt(accuracy + (range - Vector3.Distance(tgt.transform.position,transform.position))*2);
         return ans;
+    }
+
+    IEnumerator<float> FireGuidedMissile(Unit tgt)
+    {
+        yield return Timing.WaitForSeconds(2f);
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<ParticleSystem>())
+                child.GetComponent<ParticleSystem>().Emit(1);
+        }
+        GameObject clone = Instantiate(missile);
+        clone.GetComponent<MissileScript>().target = tgt;
+        clone.GetComponent<MissileScript>().weapon = this;
+        clone.transform.position = transform.position;
+        
+
     }
 
     IEnumerator<float> FireGun(Unit tgt)
@@ -69,13 +93,15 @@ public class Weapon : MonoBehaviour
                 if (child.GetComponent<ParticleSystem>())
                     child.GetComponent<ParticleSystem>().Emit(1);
             }
-            FireRound(tgt);
+            HitCalc(tgt);
             //ps.Emit(1);
             yield return Timing.WaitForSeconds(fireDelay);
         }
+        yield return Timing.WaitForSeconds(4f);
+        pc.attackContinue = true;
     }
 
-    void FireRound(Unit tgt)
+    public void HitCalc(Unit tgt)
     {
         int rand = Random.Range(0, 100);
 
@@ -87,7 +113,7 @@ public class Weapon : MonoBehaviour
             if (hitFX)
             {
                 GameObject clone = Instantiate(hitFX);
-                hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
+                hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-hitOffset, hitOffset), Random.Range(-hitOffset, hitOffset), Random.Range(-hitOffset, hitOffset));
             }
         }
         else
@@ -104,8 +130,10 @@ public class Weapon : MonoBehaviour
         transform.GetChild(2).GetComponent<ParticleSystem>().Emit(2);
         for (int i = 0; i < burstFire; i++)
         {
-            FireRound(tgt);
+            HitCalc(tgt);
             yield return Timing.WaitForSeconds(fireDelay);
         }
+        yield return Timing.WaitForSeconds(4f);
+        pc.attackContinue = true;
     }
 }

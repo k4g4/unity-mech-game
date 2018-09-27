@@ -155,14 +155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
+  missile: {fileID: 0}
+  hitFX: {fileID: 1327224421737808, guid: f9923a76545fdf64eb59f24c7d11be24, type: 2}
   wepName: GuidedMissile
   maxDmg: 5
   accuracy: 100
   weaponType: 2
   burstFire: 10
   fireDelay: 0.1
+  range: 10
   partPos: 3
+  hitOffset: 0.5
 --- !u!198 &198546650164866688
 ParticleSystem:
   m_ObjectHideFlags: 1
