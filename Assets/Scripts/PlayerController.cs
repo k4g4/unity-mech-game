@@ -12,7 +12,7 @@ public class Waypoint : ScriptableObject
     public Vector3 pos;
     public GameObject waypointMarker;
     public Unit target;
-
+    public int wepType;
     public Waypoint() { }
 }
 
@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     bool isExecuting = false;
     Unit selectedUnit;
     CameraController cc;
+    UIController uic;
+    WeaponSelect wepSelect;
     List<Waypoint> waypoints = new List<Waypoint>();
     List<Unit> teamOneList = new List<Unit>();
     List<Unit> teamTwoList = new List<Unit>();
@@ -33,9 +35,12 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        wepSelect = FindObjectOfType<WeaponSelect>();
+        uic = FindObjectOfType<UIController>();
         cc = FindObjectOfType<CameraController>();
         canvas = GameObject.Find("Canvas");
         apCost = GameObject.Find("APCostText");
+        wepSelect.gameObject.SetActive(false);
     }
 
     void Start()
@@ -76,14 +81,24 @@ public class PlayerController : MonoBehaviour
 
         isInverse = !isInverse;
         ClearWaypoints();
+        //cc.FlipCamera();
         Debug.Log("Ending turn");
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) //Hotkey for executing orders
+        if (isExecuting)
         {
-            Execute();
+            if (apCost.activeInHierarchy)
+                apCost.SetActive(false);
+            Executing();
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space)) //Hotkey for executing orders
+        {
+            if(!wepSelect.gameObject.activeInHierarchy)
+                Execute();
         }
 
         if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) //Mouse click event as long as it's not over UI
@@ -98,11 +113,14 @@ public class PlayerController : MonoBehaviour
                 selectedUnit.actionPoints += waypoints[waypoints.Count - 1].apCost;
                 RemoveWaypoint(waypoints.Count - 1);
             }
-            else
+            else if(selectedUnit)
             {
                 RemoveWaypoint(0);
                 selectedUnit = null;
+                apCost.SetActive(false);
             }
+            if (wepSelect.gameObject.activeInHierarchy)
+                wepSelect.gameObject.SetActive(false);
         }
 
         if(selectedUnit && !isExecuting) //Mouse following AP indicator
@@ -112,12 +130,6 @@ public class PlayerController : MonoBehaviour
             APIndicator();
         }
 
-        if(isExecuting)
-        {
-            if (apCost.activeInHierarchy)
-                apCost.SetActive(false);
-            Executing();
-        }
     }
 
     void APIndicator()
@@ -154,8 +166,9 @@ public class PlayerController : MonoBehaviour
             {
                 cc.FollowUnit(selectedUnit);
                 selectedUnit.Move(waypoints[0].pos);
-                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.01f)
+                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.1f)
                 {
+                    selectedUnit.isWalking = false;
                     RemoveWaypoint(0);
                 }
             }
@@ -170,30 +183,40 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            selectedUnit.IsWalking(false);
             selectedUnit = null;
             isExecuting = false;
             cc.ResetCamera();
         }
     }
 
+    public bool attackContinue = false;
     IEnumerator<float> AttackAnim()
     {
         isExecuting = false;
-        cc.AttackCamera(selectedUnit, waypoints[0].target, 0);
-        selectedUnit.Attack(selectedUnit, waypoints[0].target);
-        Waypoint temp = waypoints[0];
-        Destroy(temp.waypointMarker);
-        Destroy(temp);
-        waypoints.RemoveAt(0);
-        yield return Timing.WaitForSeconds(2f);
-        cc.ResetCamera();
+        selectedUnit.Attack(selectedUnit, waypoints[0].target, waypoints[0].wepType);
+        cc.AttackCamera(selectedUnit, waypoints[0].target, selectedUnit.weapons[waypoints[0].wepType].weaponType);
+        if(waypoints.Count>1)
+        {
+            if(waypoints[1].type==0)
+            {
+                cc.ResetCamera();
+            }
+        }
+        RemoveWaypoint(0);
+        while(!attackContinue)
+        {
+            yield return Timing.WaitForOneFrame;
+        }
+        //yield return Timing.WaitForSeconds(7f); //change to outside modifiable
         isAttackAnim = false;
         isExecuting = true;
+        attackContinue = false;
+        cc.ResetCamera();
     }
 
     public void Execute()
     {
-        Debug.Log("Executing " + waypoints.Count);
         if(waypoints.Count>0)
         {
             cc.originalPos = cc.transform.position;
@@ -220,7 +243,7 @@ public class PlayerController : MonoBehaviour
         //lastMovePoint.pos = lastMovePoint.pos;
         Waypoint temp = ScriptableObject.CreateInstance<Waypoint>();
         GameObject marker = Instantiate(waypointMarker);
-        marker.transform.SetParent(canvas.transform);
+        //marker.transform.SetParent(canvas.transform);
         temp.type = type;
         temp.apCost = apCost;
         temp.pos = pos;
@@ -228,12 +251,19 @@ public class PlayerController : MonoBehaviour
         waypoints.Add(temp);
         //selectedUnit.Move(hit.point);
         selectedUnit.actionPoints -= temp.apCost;
+        selectedUnit.us.SetAP(temp.apCost);
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(info);
         if (type == 0)
+        {
             lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().next = marker.GetComponent<WaypointMarker>();
+            marker.GetComponent<WaypointMarker>().SetColor(true);
+        }
         else if (type == 1)
+        {
             lastMovePoint.waypointMarker.GetComponent<WaypointMarker>().atk = marker.GetComponent<WaypointMarker>();
+            marker.GetComponent<WaypointMarker>().SetColor(false);
+        }
         if (target)
             temp.target = target;
     }
@@ -269,7 +299,6 @@ public class PlayerController : MonoBehaviour
                             {
                                 string info = waypoints.Count + " : MOVE\nAP Cost : " + Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)) + "\nAP Rem : " + selectedUnit.actionPoints;
                                 AddWaypoint(0, Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)), hit.point + Vector3.up * 0.5f, info, null); //check vector up displacement, increases by half meter every click
-                                Debug.Log("Move Order Set");
                             }
                             else
                             {
@@ -296,10 +325,11 @@ public class PlayerController : MonoBehaviour
                             if (!Physics.Raycast(temp.pos,hit.transform.position - temp.pos, Vector3.Distance(temp.pos, hit.transform.position), 1 << 9))
                             {
                                 string info = waypoints.Count + " : ATK\nAP Cost : " + 10 + "\nAP Rem : " + selectedUnit.actionPoints;
-                                AddWaypoint(1, 10, hit.point + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
-
+                                wepSelect.gameObject.SetActive(true);
+                                wepSelect.SetWeaponText(selectedUnit);
+                                wepSelect.transform.position = Input.mousePosition;
+                                AddWaypoint(1, 10, hit.transform.position + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
                                 //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
-                                Debug.Log("Attack Order Given");
                             }
                             else
                             {
@@ -317,10 +347,16 @@ public class PlayerController : MonoBehaviour
             {
                 if (team == 0 && hit.transform.gameObject.layer == 10 || team == 1 && hit.transform.gameObject.layer == 11)
                 {
+                    apCost.SetActive(true);
                     SelectUnit(hit.transform.GetComponent<Unit>());
                 }
             }
         }
+    }
+
+    public void SetAttackType(int type)
+    {
+        waypoints[waypoints.Count-1].wepType = type;
     }
 
     void SelectUnit(Unit unit)
@@ -333,10 +369,11 @@ public class PlayerController : MonoBehaviour
         temp.waypointMarker = marker;
         temp.type = 0;
         temp.apCost = 0;
-        temp.pos = selectedUnit.transform.position + Vector3.up * 0.5f;
+        temp.pos = selectedUnit.transform.position;
         waypoints.Add(temp);
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(waypoints.Count + " : START\nAP : " + selectedUnit.actionPoints);
+        uic.selectedUnit = unit;
         Debug.Log("Unit Selected");
     }
 

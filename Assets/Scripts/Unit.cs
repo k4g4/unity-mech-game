@@ -1,14 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Weapon
-{
-    public int weaponType = 0;
-    public int damage;
-    public int accuracy;
-}
-
+using MEC;
 
 public class Unit : MonoBehaviour
 {
@@ -18,27 +11,113 @@ public class Unit : MonoBehaviour
     public int actionPoints;
     public int maxActionPoints;
     public int attack;
-
+    public float walkSpeed = 2f;
+    public GameObject footprint;
+    public List<Weapon> weapons = new List<Weapon>();
+    public bool isWalking = false;
     Vector3 movePos = Vector3.zero;
+    Animator anim;
+    public UnitStatus us;
+    public GameObject usObj;
+
+    void Awake()
+    {
+        anim = transform.GetChild(0).GetComponent<Animator>();
+        us = Instantiate(usObj,FindObjectOfType<Canvas>().transform).GetComponent<UnitStatus>();
+        us.unit = this;
+        if (health > maxHealth)
+            health = maxHealth;
+    }
+
+    void Start()
+    {
+        SetWeapons();
+        us.UpdateInfo();
+    }
+
+    void SetWeapons()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<Weapon>())
+            {
+                weapons.Add(child.GetComponent<Weapon>());
+            }
+        }
+
+        for (int i=0;i<weapons.Count;i++)
+        {
+            switch (weapons[i].partPos)
+            {
+                case 0:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LArm"));
+                    weapons[i].transform.localPosition = Vector3.zero;
+                    break;
+                case 1:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RArm"));
+                    weapons[i].transform.localPosition = Vector3.zero;
+                    break;
+                case 2:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LShoulder"));
+                    weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.right * 0.0004f;
+                    break;
+                case 3:
+                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RShoulder"));
+                    weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.left * 0.0004f;
+                    break;
+                default:
+                    Debug.Log("Invalid part position");
+                    break;
+            }
+        }
+    }
+
+
 
     void Update()
     {
-        if(movePos != Vector3.zero)
+        if(isWalking)
         {
-            transform.position = Vector3.MoveTowards(transform.position, movePos, 5 * Time.deltaTime);
+            //transform.position = Vector3.MoveTowards(transform.position, movePos, walkSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
+            RaycastHit hit;
+            if(Physics.Raycast(transform.position,-Vector3.up,out hit,5,1<<9))
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + 0.5f, transform.position.z);
+            }
         }
     }
 
     public void Move(Vector3 targetPos)
     {
+        isWalking = true;
+        IsWalking(true);
         transform.LookAt(targetPos); //Temporary fix, need to lock and lerp rotation
         movePos = targetPos;
     }
 
-    public void Attack(Unit attacker, Unit defender) //Just reduces health, add things like accuracy and rng later
+    public void IsWalking(bool walking)
     {
+        anim.SetBool("isWalking", walking);
+    }
+
+    public void isHit()
+    {
+        anim.SetBool("isHit", true);
+        Timing.RunCoroutine(AnimHitTimer());
+    }
+
+    IEnumerator<float> AnimHitTimer()
+    {
+        yield return Timing.WaitForSeconds(2f);
+        anim.SetBool("isHit", false);
+    }
+
+    public void Attack(Unit attacker, Unit defender, int wep) //Just reduces health, add things like accuracy and rng later
+    {
+        IsWalking(false);
         transform.LookAt(defender.transform.position); //Temporary fix, need to lock and lerp rotation
-        defender.health -= attacker.attack;
-        Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
+        weapons[wep].Fire(defender);
+        //defender.health -= attacker.attack;
     }
 }
