@@ -2391,15 +2391,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
+  missile: {fileID: 1477156246658044, guid: 6e552d71e212f934ca39d8fe101f92bc, type: 2}
+  hitFX: {fileID: 1327224421737808, guid: f9923a76545fdf64eb59f24c7d11be24, type: 2}
   wepName: GuidedMissile
-  maxDmg: 5
+  maxDmg: 50
   accuracy: 100
   weaponType: 2
   burstFire: 10
   fireDelay: 0.1
-  range: 10
+  range: -10
   partPos: 3
+  hitOffset: 0.5
 --- !u!114 &114088543141911836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2411,6 +2413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missile: {fileID: 0}
   hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
   wepName: AC23-1
   maxDmg: 5
@@ -2420,6 +2423,7 @@ MonoBehaviour:
   fireDelay: 0.1
   range: 10
   partPos: 2
+  hitOffset: 0.5
 --- !u!114 &114146757266095862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2443,6 +2447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missile: {fileID: 0}
   hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
   wepName: AC23-4
   maxDmg: 5
@@ -2452,6 +2457,7 @@ MonoBehaviour:
   fireDelay: 0.05
   range: 10
   partPos: 1
+  hitOffset: 0.5
 --- !u!114 &114806470520182200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2463,6 +2469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missile: {fileID: 0}
   hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
   wepName: SHOT20-2
   maxDmg: 5
@@ -2472,6 +2479,7 @@ MonoBehaviour:
   fireDelay: 0.0001
   range: 5
   partPos: 0
+  hitOffset: 0.5
 --- !u!114 &114923427548085336
 MonoBehaviour:
   m_ObjectHideFlags: 1
