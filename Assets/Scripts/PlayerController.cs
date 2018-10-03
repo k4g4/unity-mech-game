@@ -85,6 +85,9 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < teamOneList.Count; i++) {
             teamOneList[i].us.UpdateInfo();
         }
+        for (int i = 0; i < teamTwoList.Count; i++) {
+            teamTwoList[i].us.UpdateInfo();
+        }
         Debug.Log("Ending turn");
     }
 
