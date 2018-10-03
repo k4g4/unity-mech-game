@@ -935,7 +935,7 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1300696630}
   m_CullTransparentMesh: 0
---- !u!1001 &1304259548
+--- !u!1001 &1426994855
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -973,11 +973,6 @@ Prefab:
     - target: {fileID: 4596214384040442, guid: aacc5f9265e317047a6a004e6aaa63c8, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114806470520182200, guid: aacc5f9265e317047a6a004e6aaa63c8,
-        type: 2}
-      propertyPath: accuracy
-      value: 70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aacc5f9265e317047a6a004e6aaa63c8, type: 2}
@@ -1257,6 +1252,22 @@ Prefab:
     - target: {fileID: 1209956123327652, guid: aacc5f9265e317047a6a004e6aaa63c8, type: 2}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114923427548085336, guid: aacc5f9265e317047a6a004e6aaa63c8,
+        type: 2}
+      propertyPath: usObj
+      value: 
+      objectReference: {fileID: 1085995673490002, guid: 87c2dbc507e3ef446a96c3b890b7ef81,
+        type: 2}
+    - target: {fileID: 114923427548085336, guid: aacc5f9265e317047a6a004e6aaa63c8,
+        type: 2}
+      propertyPath: health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114923427548085336, guid: aacc5f9265e317047a6a004e6aaa63c8,
+        type: 2}
+      propertyPath: maxHealth
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aacc5f9265e317047a6a004e6aaa63c8, type: 2}

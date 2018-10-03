@@ -83,6 +83,8 @@ public class Weapon : MonoBehaviour
         {
             int damage = Random.Range(maxDmg / 2, maxDmg);
             tgt.health -= damage;
+            tgt.us.Damage(damage);
+            tgt.isHit();
             uic.Damage(tgt, damage + "");
             if (hitFX)
             {

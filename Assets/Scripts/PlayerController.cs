@@ -246,6 +246,7 @@ public class PlayerController : MonoBehaviour
         waypoints.Add(temp);
         //selectedUnit.Move(hit.point);
         selectedUnit.actionPoints -= temp.apCost;
+        selectedUnit.us.SetAP(temp.apCost);
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(info);
         if (type == 0)

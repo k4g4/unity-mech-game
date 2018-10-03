@@ -66,7 +66,8 @@ public class CameraController : MonoBehaviour
 
     IEnumerator<float> GunCameraTwo(Unit atk, Unit def)
     {
-        isFollowing = false;
+        isFollowing = true;
+        /*
         transform.position = atk.transform.position - Vector3.up * 0.1f - atk.transform.right * 1 + atk.transform.forward * 0.5f;
         transform.GetChild(0).transform.LookAt(atk.transform.position);
         yield return Timing.WaitForSeconds(3f);
@@ -74,6 +75,10 @@ public class CameraController : MonoBehaviour
         targetPos = def.transform.position + Vector3.up * 0.5f - atk.transform.forward * 2;
         targetRot = Quaternion.LookRotation(def.transform.position - atk.transform.position);
         yield return Timing.WaitForSeconds(3f);
+        */
+        targetPos = def.transform.position + Vector3.up * 0.5f + atk.transform.forward * 2;
+        targetRot = Quaternion.LookRotation(atk.transform.position - def.transform.position);
+        yield return Timing.WaitForSeconds(6f);
         isFollowing = false;
     }
 

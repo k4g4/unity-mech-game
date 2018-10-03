@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class Unit : MonoBehaviour
 {
@@ -16,15 +17,22 @@ public class Unit : MonoBehaviour
     public bool isWalking = false;
     Vector3 movePos = Vector3.zero;
     Animator anim;
+    public UnitStatus us;
+    public GameObject usObj;
 
     void Awake()
     {
         anim = transform.GetChild(0).GetComponent<Animator>();
+        us = Instantiate(usObj,FindObjectOfType<Canvas>().transform).GetComponent<UnitStatus>();
+        us.unit = this;
+        if (health > maxHealth)
+            health = maxHealth;
     }
 
     void Start()
     {
         SetWeapons();
+        us.UpdateInfo();
     }
 
     void SetWeapons()
@@ -93,12 +101,23 @@ public class Unit : MonoBehaviour
         anim.SetBool("isWalking", walking);
     }
 
+    public void isHit()
+    {
+        anim.SetBool("isHit", true);
+        Timing.RunCoroutine(AnimHitTimer());
+    }
+
+    IEnumerator<float> AnimHitTimer()
+    {
+        yield return Timing.WaitForSeconds(2f);
+        anim.SetBool("isHit", false);
+    }
+
     public void Attack(Unit attacker, Unit defender, int wep) //Just reduces health, add things like accuracy and rng later
     {
         IsWalking(false);
         transform.LookAt(defender.transform.position); //Temporary fix, need to lock and lerp rotation
         weapons[wep].Fire(defender);
         //defender.health -= attacker.attack;
-        Debug.Log(attacker.unitName + " Attacks " + defender.unitName + " For " + attacker.attack + "\n" + defender.unitName + " Has " + defender.health + " HP left");
     }
 }
