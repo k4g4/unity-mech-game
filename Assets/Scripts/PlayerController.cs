@@ -82,6 +82,9 @@ public class PlayerController : MonoBehaviour
         isInverse = !isInverse;
         ClearWaypoints();
         //cc.FlipCamera();
+        for (int i = 0; i < teamOneList.Count; i++) {
+            teamOneList[i].us.UpdateInfo();
+        }
         Debug.Log("Ending turn");
     }
 
