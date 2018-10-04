@@ -29,7 +29,7 @@ public class MissileScript : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(target.transform.position - transform.position);
             cc.FollowUnit(gameObject);
 
-            if(Vector3.Distance(transform.position,target.transform.position)<0.1f)
+            if(Vector3.Distance(transform.position,target.transform.position)<0.2f)
             {
                 weapon.HitCalc(target);
                 foreach(Transform child in transform)

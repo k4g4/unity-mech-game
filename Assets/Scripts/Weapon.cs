@@ -104,7 +104,6 @@ public class Weapon : MonoBehaviour
     public void HitCalc(Unit tgt)
     {
         int rand = Random.Range(0, 100);
-
         if (rand < AccuracyCalc(tgt))
         {
             int damage = Random.Range(maxDmg / 2, maxDmg);

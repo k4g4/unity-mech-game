@@ -45,6 +45,7 @@ public class CameraController : MonoBehaviour
         {
             case 0:
                 int rand = Random.Range(0, 2);
+                Debug.Log(rand);
                 if(rand == 0)
                     Timing.RunCoroutine(GunCameraOne(attacker, defender));
                 else if(rand == 1)

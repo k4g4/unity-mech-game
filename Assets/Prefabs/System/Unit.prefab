@@ -2395,11 +2395,11 @@ MonoBehaviour:
   hitFX: {fileID: 1327224421737808, guid: f9923a76545fdf64eb59f24c7d11be24, type: 2}
   wepName: GuidedMissile
   maxDmg: 50
-  accuracy: 100
+  accuracy: 1000
   weaponType: 2
   burstFire: 10
   fireDelay: 0.1
-  range: -10
+  range: 10
   partPos: 3
   hitOffset: 0.5
 --- !u!114 &114088543141911836
@@ -2473,7 +2473,7 @@ MonoBehaviour:
   hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
   wepName: SHOT20-2
   maxDmg: 5
-  accuracy: 70
+  accuracy: 50
   weaponType: 1
   burstFire: 30
   fireDelay: 0.0001
@@ -2512,8 +2512,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 0.8
+  m_Radius: 0.4
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!137 &137037153481754736
@@ -43331,10 +43331,6 @@ ParticleSystem:
     subEmitters:
     - serializedVersion: 2
       emitter: {fileID: 198994297237196550}
-      type: 0
-      properties: 0
-    - serializedVersion: 2
-      emitter: {fileID: 198937024440589700}
       type: 0
       properties: 0
   LightsModule:

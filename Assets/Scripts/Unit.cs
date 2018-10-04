@@ -66,7 +66,7 @@ public class Unit : MonoBehaviour
                     weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.left * 0.0004f;
                     break;
                 default:
-                    Debug.Log("Invalid part position");
+                    Debug.Log("ERROR: Invalid part position - " + unitName + "|" + weapons[i].wepName);
                     break;
             }
         }
