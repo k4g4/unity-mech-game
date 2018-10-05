@@ -19,6 +19,7 @@ public class Unit : MonoBehaviour
     Animator anim;
     public UnitStatus us;
     public GameObject usObj;
+    public bool setWeapons = true;
 
     void Awake()
     {
@@ -31,7 +32,8 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
-        SetWeapons();
+        if(setWeapons)
+            SetWeapons();
         us.UpdateInfo();
     }
 
