@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.IO;
 
 public class UnitData : ScriptableObject
@@ -66,5 +67,10 @@ public class GameController : MonoBehaviour
     void StartMission()
     {
 
+    }
+
+    public void LoadScene(int i)
+    {
+        SceneManager.LoadScene(i);
     }
 }
