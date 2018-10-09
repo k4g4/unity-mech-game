@@ -45,9 +45,12 @@ public class UIController : MonoBehaviour
 
     public void Damage(Unit tgt, string dam)
     {
-        GameObject clone = Instantiate(hitDamage, canvas.transform);
-        hitDamage.GetComponent<RectTransform>().position = Camera.main.WorldToViewportPoint(tgt.transform.position) + new Vector3(Random.Range(-40f,40f),Random.Range(0f,80f),Random.Range(-40f,40f));
-        hitDamage.GetComponent<Text>().text = dam;
+        if(hitDamage)
+        {
+            GameObject clone = Instantiate(hitDamage, canvas.transform);
+            hitDamage.GetComponent<RectTransform>().position = Camera.main.WorldToViewportPoint(tgt.transform.position) + new Vector3(Random.Range(-40f, 40f), Random.Range(0f, 80f), Random.Range(-40f, 40f));
+            hitDamage.GetComponent<Text>().text = dam;
+        }
     }
 
     void MouseRaycast() //Check what mouse is hitting

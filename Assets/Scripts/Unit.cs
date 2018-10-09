@@ -105,8 +105,11 @@ public class Unit : MonoBehaviour
 
     public void isHit()
     {
-        anim.SetBool("isHit", true);
-        Timing.RunCoroutine(AnimHitTimer());
+        if(anim)
+        {
+            anim.SetBool("isHit", true);
+            Timing.RunCoroutine(AnimHitTimer());
+        }
     }
 
     IEnumerator<float> AnimHitTimer()
