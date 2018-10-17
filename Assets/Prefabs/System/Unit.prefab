@@ -2473,6 +2473,7 @@ MonoBehaviour:
   us: {fileID: 0}
   usObj: {fileID: 1085995673490002, guid: 87c2dbc507e3ef446a96c3b890b7ef81, type: 2}
   setWeapons: 1
+  deathFX: {fileID: 1472427309261080, guid: 39a83bcc7a7140c499105f7dfe3ff6e4, type: 2}
 --- !u!136 &136456554798109358
 CapsuleCollider:
   m_ObjectHideFlags: 1

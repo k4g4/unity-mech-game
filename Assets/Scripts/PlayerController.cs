@@ -58,6 +58,28 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public void RemoveUnit(Unit unit)
+    {
+        if(waypoints.Count>0)
+        {
+            for(int x=0;x<waypoints.Count;x++)
+            {
+                for (int i = 0; i < waypoints.Count; i++)
+                {
+                    if (waypoints[i].type == 1 && waypoints[i].target == unit)
+                    {
+                        RemoveWaypoint(i);
+                    }
+                }
+            }
+        }
+        if (teamOneList.Contains(unit))
+            teamOneList.Remove(unit);
+        else
+            teamTwoList.Remove(unit);
+    }
+
     public void EndTurn() //Swap unit layers
     {
         for(int i=0;i<teamOneList.Count;i++)

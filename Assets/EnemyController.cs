@@ -44,6 +44,7 @@ public class EnemyController : MonoBehaviour
             pc.Execute();
             yield return Timing.WaitForSeconds(18f);
         }
+        Debug.Log("enemy ending turn");
         pc.EndTurn();
     }
 }

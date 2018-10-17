@@ -107,7 +107,7 @@ public class Weapon : MonoBehaviour
         if (rand < AccuracyCalc(tgt))
         {
             int damage = Random.Range(maxDmg / 2, maxDmg);
-            tgt.health -= damage;
+            tgt.Damage(damage);
             tgt.us.Damage(damage);
             tgt.isHit();
             uic.Damage(tgt, damage + "");

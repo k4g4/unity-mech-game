@@ -20,6 +20,8 @@ public class Unit : MonoBehaviour
     public UnitStatus us;
     public GameObject usObj;
     public bool setWeapons = true;
+    public GameObject deathFX;
+    bool isDead = false;
 
     void Awake()
     {
@@ -113,13 +115,39 @@ public class Unit : MonoBehaviour
         if(anim)
         {
             anim.SetBool("isHit", true);
-            Timing.RunCoroutine(AnimHitTimer());
+            Timing.RunCoroutine(AnimHitTimer(),"anim");
         }
+    }
+
+    public void Damage(int hp)
+    {
+        health -= hp;
+        if(health < 1&&!isDead)
+        {
+            isDead = true;
+            GameObject clone = Instantiate(deathFX);
+            deathFX.transform.position = transform.position;
+            gameObject.layer = 0;
+            FindObjectOfType<PlayerController>().RemoveUnit(GetComponent<Unit>());
+            Timing.KillCoroutines("anim");
+            Timing.RunCoroutine(DeathTimer());
+        }
+    }
+
+    IEnumerator<float> DeathTimer()
+    {
+        yield return Timing.WaitForSeconds(5f);
+        GameObject clone = Instantiate(deathFX);
+        deathFX.transform.position = transform.position;
+        Destroy(us.gameObject);
+        Destroy(gameObject);
     }
 
     IEnumerator<float> AnimHitTimer()
     {
         yield return Timing.WaitForSeconds(2f);
+        if (isDead)
+            yield break;
         anim.SetBool("isHit", false);
     }
 
