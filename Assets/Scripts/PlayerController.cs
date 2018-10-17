@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
     CameraController cc;
     UIController uic;
     WeaponSelect wepSelect;
-    List<Waypoint> waypoints = new List<Waypoint>();
-    List<Unit> teamOneList = new List<Unit>();
-    List<Unit> teamTwoList = new List<Unit>();
+    public List<Waypoint> waypoints = new List<Waypoint>();
+    public List<Unit> teamOneList = new List<Unit>();
+    public List<Unit> teamTwoList = new List<Unit>();
     GameObject canvas;
     GameObject apCost;
     bool isInverse = true;
@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     public void EndTurn() //Swap unit layers
     {
         for(int i=0;i<teamOneList.Count;i++)
@@ -78,10 +77,11 @@ public class PlayerController : MonoBehaviour
                 teamTwoList[i].gameObject.layer = 11;
             teamTwoList[i].actionPoints = teamTwoList[i].maxActionPoints;
         }
-
-        isInverse = !isInverse;
         ClearWaypoints();
         //cc.FlipCamera();
+        if (isInverse)
+            FindObjectOfType<EnemyController>().StartTurn();
+        isInverse = !isInverse;
         Debug.Log("Ending turn");
     }
 
@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
             if(waypoints.Count>1)
             {
                 selectedUnit.actionPoints += waypoints[waypoints.Count - 1].apCost;
+                selectedUnit.us.UpdateInfo();
                 RemoveWaypoint(waypoints.Count - 1);
             }
             else if(selectedUnit)
@@ -237,7 +238,7 @@ public class PlayerController : MonoBehaviour
         return waypoints[0];
     }
 
-    void AddWaypoint(int type, int apCost, Vector3 pos, string info, Unit target) //Creates a waypoint based on type
+    public void AddWaypoint(int type, int apCost, Vector3 pos, string info, Unit target) //Creates a waypoint based on type
     {
         Waypoint lastMovePoint = GetLastMovePoint();
         //lastMovePoint.pos = lastMovePoint.pos;
@@ -278,6 +279,8 @@ public class PlayerController : MonoBehaviour
 
     void OnClickCheck()
     {
+        if (isExecuting)
+            return;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 100f)) 
@@ -359,7 +362,7 @@ public class PlayerController : MonoBehaviour
         waypoints[waypoints.Count-1].wepType = type;
     }
 
-    void SelectUnit(Unit unit)
+    public void SelectUnit(Unit unit)
     {
         ClearWaypoints();
         selectedUnit = unit;
@@ -381,7 +384,13 @@ public class PlayerController : MonoBehaviour
     {
         while(waypoints.Count>0)
         {
+            if(selectedUnit)
+            {
+                selectedUnit.actionPoints += waypoints[0].apCost;
+                selectedUnit.us.UpdateInfo();
+            }
             Waypoint temp = waypoints[0];
+            Destroy(temp.waypointMarker);
             Destroy(temp);
             waypoints.RemoveAt(0);
         }

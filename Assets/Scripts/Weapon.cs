@@ -77,7 +77,7 @@ public class Weapon : MonoBehaviour
         }
         GameObject clone = Instantiate(missile);
         clone.GetComponent<MissileScript>().target = tgt;
-        clone.GetComponent<MissileScript>().weapon = this;
+        clone.GetComponent<MissileScript>().weapon = GetComponent<Weapon>();
         clone.transform.position = transform.position;
         
 
@@ -114,7 +114,7 @@ public class Weapon : MonoBehaviour
             if (hitFX)
             {
                 GameObject clone = Instantiate(hitFX);
-                hitFX.transform.position = tgt.transform.position + new Vector3(Random.Range(-hitOffset, hitOffset), Random.Range(-hitOffset, hitOffset), Random.Range(-hitOffset, hitOffset));
+                clone.transform.position = tgt.transform.position + new Vector3(Random.Range(-hitOffset, hitOffset), Random.Range(-hitOffset, hitOffset), Random.Range(-hitOffset, hitOffset));
             }
         }
         else

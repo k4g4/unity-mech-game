@@ -45,11 +45,12 @@ public class UIController : MonoBehaviour
 
     public void Damage(Unit tgt, string dam)
     {
+        Debug.Log(dam);
         if(hitDamage)
         {
             GameObject clone = Instantiate(hitDamage, canvas.transform);
-            hitDamage.GetComponent<RectTransform>().position = Camera.main.WorldToViewportPoint(tgt.transform.position) + new Vector3(Random.Range(-40f, 40f), Random.Range(0f, 80f), Random.Range(-40f, 40f));
-            hitDamage.GetComponent<Text>().text = dam;
+            clone.GetComponent<RectTransform>().localPosition = Camera.main.WorldToViewportPoint(tgt.transform.position) + new Vector3(Random.Range(-40f, 40f), Random.Range(0f, 80f), Random.Range(-40f, 40f));
+            clone.GetComponent<Text>().text = dam;
         }
     }
 

@@ -35,6 +35,11 @@ public class Unit : MonoBehaviour
         if(setWeapons)
             SetWeapons();
         us.UpdateInfo();
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 5, 1 << 9))
+        {
+            transform.position = new Vector3(transform.position.x, hit.point.y + 0.5f, transform.position.z);
+        }
     }
 
     void SetWeapons()

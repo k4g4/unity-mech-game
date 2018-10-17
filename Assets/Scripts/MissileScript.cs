@@ -7,7 +7,7 @@ public class MissileScript : MonoBehaviour
 {
     public float speed;
 
-    [HideInInspector]
+
     public Weapon weapon;
     public Unit target;
     PlayerController pc;
