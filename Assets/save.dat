@@ -15,9 +15,9 @@ Autocannon 20
 False
 2
 Autocannon 20
+3
 0
-0
-False
+True
 ###UNITS###
 ###UNIT###
 0
@@ -29,6 +29,7 @@ Test
 0
 0
 0
+2
 ###UNITEND###
 ###UNIT###
 1

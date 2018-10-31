@@ -42,7 +42,7 @@ public class ArmoryController : MonoBehaviour
         for (int i = 0; i < GameController.instance.weapons.Count; i++)
         {
             if (GameController.instance.weapons[i].inUse)
-                break;
+                continue;
             GameObject clone = Instantiate(armoryWeaponButton, armoryWeaponContent.transform);
             clone.GetComponent<ArmoryWeaponButton>().ac = this;
             clone.GetComponent<ArmoryWeaponButton>().weapon = GameController.instance.weapons[i];
