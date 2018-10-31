@@ -1,1 +1,42 @@
-hello world
+Player
+0
+0
+0
+###WEAPONS###
+0
+Autocannon 20
+2
+0
+True
+1
+Autocannon 20
+0
+0
+False
+2
+Autocannon 20
+0
+0
+False
+###UNITS###
+###UNIT###
+0
+Test
+1
+100
+100
+30
+0
+0
+0
+###UNITEND###
+###UNIT###
+1
+
+1
+100
+100
+30
+0
+0
+###UNITEND###

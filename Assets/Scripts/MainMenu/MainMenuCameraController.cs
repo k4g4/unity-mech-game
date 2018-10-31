@@ -27,6 +27,10 @@ public class MainMenuCameraController : MonoBehaviour
         menuBG.Add(GameObject.Find("ArmoryBG"));
         menuBG.Add(GameObject.Find("SortieBG"));
 
+    }
+
+    void Start()
+    {
         HideAllMenus();
         ShowAllMenuButtons();
     }
@@ -54,6 +58,18 @@ public class MainMenuCameraController : MonoBehaviour
         HideAllMenuButtons();
         HideAllMenus();
         menuBG[i].SetActive(true);
+        switch(i)
+        {
+            case 2:
+                FindObjectOfType<ArmoryController>().ShowArmory();
+                break;
+            case 3:
+                FindObjectOfType<SortieController>().ShowSortie();
+                break;
+            default:
+                Debug.Log("MAIN MENU CONTROLLER: Missing Menu ID");
+                break;
+        }
     }
 
     void HideAllMenuButtons()

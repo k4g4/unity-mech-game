@@ -6,9 +6,9 @@ public class PartDict : MonoBehaviour
 {
     public static PartDict instance = null;
 
-    Dictionary<int, GameObject> partDict = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> partDict = new Dictionary<int, GameObject>();
 
-    public GameObject ac231, ac234, guidMiss;
+    public GameObject ac231, ac234, guidMiss, shot30;
 
     void Awake()
     {
@@ -25,5 +25,6 @@ public class PartDict : MonoBehaviour
         partDict.Add(0, ac231);
         partDict.Add(1, ac234);
         partDict.Add(2, guidMiss);
+        
     }
 }
