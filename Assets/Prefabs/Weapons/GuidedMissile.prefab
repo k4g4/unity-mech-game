@@ -158,6 +158,7 @@ MonoBehaviour:
   missile: {fileID: 1477156246658044, guid: 6e552d71e212f934ca39d8fe101f92bc, type: 2}
   hitFX: {fileID: 1327224421737808, guid: f9923a76545fdf64eb59f24c7d11be24, type: 2}
   wepName: GuidedMissile
+  weaponID: 2
   maxDmg: 5
   accuracy: 100
   weaponType: 2
@@ -166,6 +167,7 @@ MonoBehaviour:
   range: 10
   partPos: 3
   hitOffset: 0.5
+  apCost: 20
 --- !u!198 &198546650164866688
 ParticleSystem:
   m_ObjectHideFlags: 1

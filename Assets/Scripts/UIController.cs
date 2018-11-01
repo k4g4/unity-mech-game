@@ -45,7 +45,6 @@ public class UIController : MonoBehaviour
 
     public void Damage(Unit tgt, string dam)
     {
-        Debug.Log(dam);
         if(hitDamage)
         {
             GameObject clone = Instantiate(hitDamage, canvas.transform);

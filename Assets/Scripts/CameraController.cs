@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
     public Vector3 originalPos;
     Vector3 targetPos;
     Quaternion targetRot;
+    public bool isAnimating = false;
 
 	void Update ()
     {
@@ -30,11 +31,13 @@ public class CameraController : MonoBehaviour
 
     public void FollowUnit(Unit unit)
     {
-        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 2 - Vector3.forward, speed * Time.deltaTime);
+        isAnimating = true;
+        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 4 - Vector3.forward*2, speed * Time.deltaTime);
     }
 
     public void FollowUnit(GameObject unit)
     {
+        isAnimating = true;
         transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 2 - Vector3.forward, speed * Time.deltaTime);
     }
 
@@ -66,11 +69,13 @@ public class CameraController : MonoBehaviour
 
     IEnumerator<float> MissileCameraOne(Unit atk, Unit def)
     {
+        isAnimating = true;
         yield return Timing.WaitForSeconds(1f);
     }
 
     IEnumerator<float> GunCameraOne(Unit atk, Unit def)
     {
+        isAnimating = true;
         isFollowing = true;
         targetPos = atk.transform.position + Vector3.up*0.5f - atk.transform.forward * 2;
         targetRot = Quaternion.LookRotation(def.transform.position - atk.transform.position);
@@ -82,6 +87,7 @@ public class CameraController : MonoBehaviour
 
     IEnumerator<float> GunCameraTwo(Unit atk, Unit def)
     {
+        isAnimating = true;
         isFollowing = true;
         /*
         transform.position = atk.transform.position - Vector3.up * 0.1f - atk.transform.right * 1 + atk.transform.forward * 0.5f;
@@ -102,6 +108,7 @@ public class CameraController : MonoBehaviour
     {
         transform.position = originalPos;
         transform.GetChild(0).transform.rotation = Quaternion.Euler(new Vector3(65, 0, 0));
+        isAnimating = false;
     }
 }
     

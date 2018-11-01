@@ -13,6 +13,7 @@ public class Unit : MonoBehaviour
     public int attack;
     public float walkSpeed = 2f;
     public GameObject footprint;
+    public List<GameObject> initWeapons = new List<GameObject>();
     public List<Weapon> weapons = new List<Weapon>();
     public bool isWalking = false;
     Vector3 movePos = Vector3.zero;
@@ -22,6 +23,7 @@ public class Unit : MonoBehaviour
     public bool setWeapons = true;
     public GameObject deathFX;
     bool isDead = false;
+    public List<GameObject> aiWaypoints = new List<GameObject>();
 
     void Awake()
     {
@@ -52,6 +54,13 @@ public class Unit : MonoBehaviour
             {
                 weapons.Add(child.GetComponent<Weapon>());
             }
+        }
+
+        for(int i=0;i<initWeapons.Count;i++)
+        {
+            GameObject clone = Instantiate(FindObjectOfType<PartDict>().partDict[initWeapons[i].GetComponent<Weapon>().weaponID], transform);
+            clone.GetComponent<Weapon>().partPos = i;
+            weapons.Add(clone.GetComponent<Weapon>());
         }
 
         for (int i=0;i<weapons.Count;i++)
@@ -126,7 +135,7 @@ public class Unit : MonoBehaviour
         {
             isDead = true;
             GameObject clone = Instantiate(deathFX);
-            deathFX.transform.position = transform.position;
+            clone.transform.position = transform.position;
             gameObject.layer = 0;
             FindObjectOfType<PlayerController>().RemoveUnit(GetComponent<Unit>());
             Timing.KillCoroutines("anim");
@@ -138,7 +147,7 @@ public class Unit : MonoBehaviour
     {
         yield return Timing.WaitForSeconds(5f);
         GameObject clone = Instantiate(deathFX);
-        deathFX.transform.position = transform.position;
+        clone.transform.position = transform.position;
         Destroy(us.gameObject);
         Destroy(gameObject);
     }

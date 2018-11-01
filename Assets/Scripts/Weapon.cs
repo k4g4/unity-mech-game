@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
     public GameObject missile;
     public GameObject hitFX;
     public string wepName = "Untitled";
+    public int weaponID;
     public int maxDmg; 
     public int accuracy; //out of 100
     public int weaponType = 0;
@@ -16,6 +17,7 @@ public class Weapon : MonoBehaviour
     public int range = 10;
     public int partPos = 0; //0 = LArm, 1 = RArm, 2 = LShoulder, 3 = RShoulder
     public float hitOffset = 0.5f;
+    public int apCost = 10;
     UIController uic;
     PlayerController pc;
     CameraController cc;

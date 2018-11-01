@@ -248,14 +248,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88af71b97251a65478f0ff85826d8c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missile: {fileID: 0}
   hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
   wepName: AC23-4
+  weaponID: 1
   maxDmg: 5
   accuracy: 75
   weaponType: 0
   burstFire: 20
   fireDelay: 0.05
+  range: 10
   partPos: 1
+  hitOffset: 0.5
+  apCost: 10
 --- !u!198 &198049731425759258
 ParticleSystem:
   m_ObjectHideFlags: 1

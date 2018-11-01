@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject waypointMarker;
 
     bool isExecuting = false;
-    Unit selectedUnit;
+    public Unit selectedUnit;
     CameraController cc;
     UIController uic;
     WeaponSelect wepSelect;
@@ -116,7 +116,8 @@ public class PlayerController : MonoBehaviour
             Executing();
             return;
         }
-
+        if (!isInverse || isAttackAnim)
+            return;
         if (Input.GetKeyDown(KeyCode.Space)) //Hotkey for executing orders
         {
             if(!wepSelect.gameObject.activeInHierarchy)
@@ -199,8 +200,17 @@ public class PlayerController : MonoBehaviour
             {
                 if (!isAttackAnim)
                 {
-                    Timing.RunCoroutine(AttackAnim());
-                    isAttackAnim = true;
+                    if (!waypoints[0].target || waypoints[0].target.health < 1)
+                    {
+                        selectedUnit.actionPoints += waypoints[0].apCost;
+                        selectedUnit.us.UpdateInfo();
+                        RemoveWaypoint(0);
+                    }
+                    else
+                    {
+                        Timing.RunCoroutine(AttackAnim());
+                        isAttackAnim = true;
+                    }
                 }
             }
         }
@@ -235,7 +245,8 @@ public class PlayerController : MonoBehaviour
         isAttackAnim = false;
         isExecuting = true;
         attackContinue = false;
-        cc.ResetCamera();
+        if(waypoints.Count<1 || waypoints[0].type==0)
+            cc.ResetCamera();
     }
 
     public void Execute()
@@ -341,29 +352,30 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (hit.transform.gameObject.layer == 11) //Clicked on Enemy
                     {
+                        /*
                         if (HasPointsToAttack(selectedUnit)) //add create waypoint method
                         {
-                            Waypoint lastMovePoint = GetLastMovePoint();
-                            Waypoint temp = new Waypoint();
-                            temp.pos = lastMovePoint.pos + Vector3.up * 0.5f;
-
-                            if (!Physics.Raycast(temp.pos,hit.transform.position - temp.pos, Vector3.Distance(temp.pos, hit.transform.position), 1 << 9))
-                            {
-                                string info = waypoints.Count + " : ATK\nAP Cost : " + 10 + "\nAP Rem : " + selectedUnit.actionPoints;
-                                wepSelect.gameObject.SetActive(true);
-                                wepSelect.SetWeaponText(selectedUnit);
-                                wepSelect.transform.position = Input.mousePosition;
-                                AddWaypoint(1, 10, hit.transform.position + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
-                                //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
-                            }
-                            else
-                            {
-                                Debug.Log("There is something in the way");
-                            }
                         }
                         else
                         {
                             Debug.Log("There are not enough points to attack");
+                        }*/
+                        Waypoint lastMovePoint = GetLastMovePoint();
+                        Waypoint temp = new Waypoint();
+                        temp.pos = lastMovePoint.pos + Vector3.up * 0.5f;
+
+                        if (!Physics.Raycast(temp.pos, hit.transform.position - temp.pos, Vector3.Distance(temp.pos, hit.transform.position), 1 << 9))
+                        {
+                            string info = waypoints.Count + " : ATK\nAP Cost : " + 10 + "\nAP Rem : " + selectedUnit.actionPoints;
+                            wepSelect.gameObject.SetActive(true);
+                            wepSelect.SetWeaponText(selectedUnit);
+                            wepSelect.transform.position = Input.mousePosition;
+                            AddWaypoint(1, 0, hit.transform.position + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
+                            //Attack(selectedUnit, hit.transform.GetComponent<Unit>());
+                        }
+                        else
+                        {
+                            Debug.Log("There is something in the way");
                         }
                     }
                 }
@@ -381,7 +393,10 @@ public class PlayerController : MonoBehaviour
 
     public void SetAttackType(int type)
     {
+        selectedUnit.actionPoints -= selectedUnit.weapons[type].apCost;
+        waypoints[waypoints.Count-1].apCost = selectedUnit.weapons[type].apCost;
         waypoints[waypoints.Count-1].wepType = type;
+        selectedUnit.us.UpdateInfo();
     }
 
     public void SelectUnit(Unit unit)
@@ -424,8 +439,8 @@ public class PlayerController : MonoBehaviour
         return unit.actionPoints >= dist;
     }
 
-    bool HasPointsToAttack(Unit unit)
+   public bool HasPointsToAttack(Unit unit,int weapon)
     {
-        return unit.actionPoints >= 10; //arbitrary value, change to check weapon AP usage later
+        return unit.actionPoints >= unit.weapons[weapon].apCost; //arbitrary value, change to check weapon AP usage later
     }
 }

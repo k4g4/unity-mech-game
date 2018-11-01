@@ -31,25 +31,30 @@ public class WeaponSelect : MonoBehaviour
 
     void OnClickOne()
     {
-        pc.SetAttackType(0);
-        gameObject.SetActive(false);
+        SelectWeapon(0);
     }
 
     void OnClickTwo()
     {
-        pc.SetAttackType(1);
-        gameObject.SetActive(false);
+        SelectWeapon(1);
     }
 
     void OnClickThree()
     {
-        pc.SetAttackType(2);
-        gameObject.SetActive(false);
+        SelectWeapon(2);
     }
 
     void OnClickFour()
     {
-        pc.SetAttackType(3);
+        SelectWeapon(3);
+    }
+
+    void SelectWeapon(int i)
+    {
+        if (pc.HasPointsToAttack(pc.selectedUnit, i))
+        {
+            pc.SetAttackType(i);
+        }
         gameObject.SetActive(false);
     }
 

@@ -25,6 +25,7 @@ public class PartDict : MonoBehaviour
         partDict.Add(0, ac231);
         partDict.Add(1, ac234);
         partDict.Add(2, guidMiss);
+        partDict.Add(3, shot30);
         
     }
 }
