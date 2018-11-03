@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     GameObject canvas;
     GameObject apCost;
     bool isInverse = true;
+    public int turnCount = 1;
 
     void Awake()
     {
@@ -103,6 +104,11 @@ public class PlayerController : MonoBehaviour
         //cc.FlipCamera();
         if (isInverse)
             FindObjectOfType<EnemyController>().StartTurn();
+        else
+        {
+            turnCount++;
+            uic.SetTurnCounter(turnCount);
+        }
         isInverse = !isInverse;
         Debug.Log("Ending turn");
     }
@@ -259,7 +265,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    Waypoint GetLastMovePoint()
+    public Waypoint GetLastMovePoint()
     {
         for (int i = waypoints.Count - 1; i > 0; i--)
         {
@@ -368,7 +374,7 @@ public class PlayerController : MonoBehaviour
                         {
                             string info = waypoints.Count + " : ATK\nAP Cost : " + 10 + "\nAP Rem : " + selectedUnit.actionPoints;
                             wepSelect.gameObject.SetActive(true);
-                            wepSelect.SetWeaponText(selectedUnit);
+                            wepSelect.SetWeaponText(selectedUnit,hit.transform.GetComponent<Unit>());
                             wepSelect.transform.position = Input.mousePosition;
                             AddWaypoint(1, 0, hit.transform.position + Vector3.up * 0.5f, info, hit.transform.GetComponent<Unit>());
                             //Attack(selectedUnit, hit.transform.GetComponent<Unit>());

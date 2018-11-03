@@ -7,7 +7,10 @@ public class WeaponSelect : MonoBehaviour
 {
     Button weaponOne, weaponTwo, weaponThree, weaponFour;
     Text weaponOneText, weaponTwoText, weaponThreeText, weaponFourText;
+    Text weaponOneAP, weaponTwoAP, weaponThreeAP, weaponFourAP;
+    Text weaponOneAcc, weaponTwoAcc, weaponThreeAcc, weaponFourAcc;
     PlayerController pc;
+    List<Text> weaponText = new List<Text>();
 
     void Awake()
     {
@@ -22,6 +25,28 @@ public class WeaponSelect : MonoBehaviour
         weaponTwoText = weaponTwo.transform.GetChild(0).GetComponent<Text>();
         weaponThreeText = weaponThree.transform.GetChild(0).GetComponent<Text>();
         weaponFourText = weaponFour.transform.GetChild(0).GetComponent<Text>();
+        weaponText.Add(weaponOneText);
+        weaponText.Add(weaponTwoText);
+        weaponText.Add(weaponThreeText);
+        weaponText.Add(weaponFourText);
+
+        weaponOneAP = transform.GetChild(4).GetChild(0).GetComponent<Text>();
+        weaponTwoAP = transform.GetChild(5).GetChild(0).GetComponent<Text>();
+        weaponThreeAP = transform.GetChild(6).GetChild(0).GetComponent<Text>();
+        weaponFourAP = transform.GetChild(7).GetChild(0).GetComponent<Text>();
+        weaponText.Add(weaponOneAP);
+        weaponText.Add(weaponTwoAP);
+        weaponText.Add(weaponThreeAP);
+        weaponText.Add(weaponFourAP);
+
+        weaponOneAcc = transform.GetChild(8).GetChild(0).GetComponent<Text>();
+        weaponTwoAcc = transform.GetChild(9).GetChild(0).GetComponent<Text>();
+        weaponThreeAcc = transform.GetChild(10).GetChild(0).GetComponent<Text>();
+        weaponFourAcc = transform.GetChild(11).GetChild(0).GetComponent<Text>();
+        weaponText.Add(weaponOneAcc);
+        weaponText.Add(weaponTwoAcc);
+        weaponText.Add(weaponThreeAcc);
+        weaponText.Add(weaponFourAcc);
 
         weaponOne.onClick.AddListener(() => OnClickOne());
         weaponTwo.onClick.AddListener(() => OnClickTwo());
@@ -58,11 +83,16 @@ public class WeaponSelect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void SetWeaponText(Unit unit)
+    public void SetWeaponText(Unit unit,Unit target)
     {
-        weaponOneText.text = unit.weapons[0].wepName;
-        weaponTwoText.text = unit.weapons[1].wepName;
-        weaponThreeText.text = unit.weapons[2].wepName;
-        weaponFourText.text = unit.weapons[3].wepName;
+        for(int i=0;i<unit.weapons.Count;i++)
+        {
+            weaponText[unit.weapons[i].partPos].text = unit.weapons[i].wepName;
+            weaponText[unit.weapons[i].partPos+4].text = unit.weapons[i].apCost + "";
+            if(pc.GetLastMovePoint())
+                weaponText[unit.weapons[i].partPos + 8].text = unit.weapons[i].AccuracyCalc(pc.GetLastMovePoint().pos,target.transform.position) + "";
+            else
+                weaponText[unit.weapons[i].partPos + 8].text = unit.weapons[i].AccuracyCalc(unit.transform.position,target.transform.position) + "";
+        }
     }
 }

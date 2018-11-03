@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     GameObject mouseInfoBoxBG;
-    Text mouseInfoBoxText,unitInfoText;
+    Text mouseInfoBoxText,unitInfoText,turnCounter;
     public Unit selectedUnit;
     public GameObject hitDamage;
     Canvas canvas;
+
     
 
     void Awake()
@@ -17,6 +18,7 @@ public class UIController : MonoBehaviour
         mouseInfoBoxBG = GameObject.Find("MouseInfoBoxBG");
         mouseInfoBoxText = GameObject.Find("MouseInfoBoxText").GetComponent<Text>();
         unitInfoText = GameObject.Find("UnitInfoText").GetComponent<Text>();
+        turnCounter = GameObject.Find("TurnCounter").GetComponent<Text>();
         canvas = FindObjectOfType<Canvas>();
     }
 
@@ -29,6 +31,11 @@ public class UIController : MonoBehaviour
     public void SetMouseInfo(string text)
     {
         mouseInfoBoxText.text = text;
+    }
+
+    public void SetTurnCounter(int count)
+    {
+        turnCounter.text = "TURN\n" + count; 
     }
 
 	void Update ()

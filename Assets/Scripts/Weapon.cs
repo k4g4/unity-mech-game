@@ -21,12 +21,15 @@ public class Weapon : MonoBehaviour
     UIController uic;
     PlayerController pc;
     CameraController cc;
+    AudioSource audSoc;
+    public AudioClip shootSFX;
 
     void Awake()
     {
         uic = FindObjectOfType<UIController>();
         pc = FindObjectOfType<PlayerController>();
         cc = FindObjectOfType<CameraController>();
+        audSoc = GetComponent<AudioSource>();
     }
     
     //ParticleSystem ps;
@@ -63,11 +66,18 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    int AccuracyCalc(Unit tgt)
+    public int AccuracyCalc(Unit tgt)
     {
         int ans = Mathf.RoundToInt(accuracy + (range - Vector3.Distance(tgt.transform.position,transform.position))*2);
         return ans;
     }
+
+    public int AccuracyCalc(Vector3 pos,Vector3 targetPos)
+    {
+        int ans = Mathf.RoundToInt(accuracy + (range - Vector3.Distance(pos, targetPos)) * 2);
+        return ans;
+    }
+
 
     IEnumerator<float> FireGuidedMissile(Unit tgt)
     {
@@ -77,6 +87,7 @@ public class Weapon : MonoBehaviour
             if (child.GetComponent<ParticleSystem>())
                 child.GetComponent<ParticleSystem>().Emit(1);
         }
+        audSoc.PlayOneShot(shootSFX);
         GameObject clone = Instantiate(missile);
         clone.GetComponent<MissileScript>().target = tgt;
         clone.GetComponent<MissileScript>().weapon = GetComponent<Weapon>();
@@ -90,10 +101,14 @@ public class Weapon : MonoBehaviour
         yield return Timing.WaitForSeconds(2f);
         for (int i=0;i<burstFire;i++)
         {
-            foreach(Transform child in transform)
+            audSoc.PlayOneShot(shootSFX);
+            audSoc.pitch = Random.Range(0.8f, 1.2f);
+            foreach (Transform child in transform)
             {
                 if (child.GetComponent<ParticleSystem>())
+                {
                     child.GetComponent<ParticleSystem>().Emit(1);
+                }
             }
             HitCalc(tgt);
             //ps.Emit(1);
@@ -131,6 +146,7 @@ public class Weapon : MonoBehaviour
         transform.GetChild(0).GetComponent<ParticleSystem>().Emit(1); //Muzzle
         transform.GetChild(1).GetComponent<ParticleSystem>().Emit(burstFire); //Emitter
         transform.GetChild(2).GetComponent<ParticleSystem>().Emit(2);
+        audSoc.PlayOneShot(shootSFX);
         for (int i = 0; i < burstFire; i++)
         {
             HitCalc(tgt);

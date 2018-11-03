@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4370068293253452}
   - component: {fileID: 114053759943971960}
+  - component: {fileID: 82327802756254712}
   m_Layer: 0
   m_Name: AC23-1
   m_TagString: Untagged
@@ -238,6 +239,102 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1470402877676446}
   m_Mesh: {fileID: 4300000, guid: 6c84926575847434085fee2a0554462c, type: 3}
+--- !u!82 &82327802756254712
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1565024051043666}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: dcbc1009a6280e64e8864b25fe940051,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: b684435a162aff246a551c6aa082b8ad, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &95040586156633430
 Animator:
   serializedVersion: 3
@@ -272,7 +369,7 @@ MonoBehaviour:
   wepName: AC23-1
   weaponID: 0
   maxDmg: 5
-  accuracy: 80
+  accuracy: 90
   weaponType: 0
   burstFire: 5
   fireDelay: 0.1
@@ -280,6 +377,7 @@ MonoBehaviour:
   partPos: 2
   hitOffset: 0.5
   apCost: 5
+  shootSFX: {fileID: 8300000, guid: b684435a162aff246a551c6aa082b8ad, type: 3}
 --- !u!198 &198130898061045000
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -8417,10 +8515,6 @@ ParticleSystem:
     subEmitters:
     - serializedVersion: 2
       emitter: {fileID: 198759237416225158}
-      type: 0
-      properties: 0
-    - serializedVersion: 2
-      emitter: {fileID: 198130898061045000}
       type: 0
       properties: 0
   LightsModule:

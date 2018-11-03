@@ -24,14 +24,18 @@ public class Unit : MonoBehaviour
     public GameObject deathFX;
     bool isDead = false;
     public List<GameObject> aiWaypoints = new List<GameObject>();
+    AudioSource audSoc;
+    public AudioClip walkSFX;
 
     void Awake()
     {
         anim = transform.GetChild(0).GetComponent<Animator>();
         us = Instantiate(usObj,FindObjectOfType<Canvas>().transform).GetComponent<UnitStatus>();
+        us.transform.SetAsFirstSibling();
         us.unit = this;
         if (health > maxHealth)
             health = maxHealth;
+        audSoc = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -56,8 +60,10 @@ public class Unit : MonoBehaviour
             }
         }
 
-        for(int i=0;i<initWeapons.Count;i++)
+        for(int i=0;i<4;i++)
         {
+            if (!initWeapons[i])
+                continue;
             GameObject clone = Instantiate(FindObjectOfType<PartDict>().partDict[initWeapons[i].GetComponent<Weapon>().weaponID], transform);
             clone.GetComponent<Weapon>().partPos = i;
             weapons.Add(clone.GetComponent<Weapon>());
@@ -102,6 +108,17 @@ public class Unit : MonoBehaviour
             if(Physics.Raycast(transform.position,-Vector3.up,out hit,5,1<<9))
             {
                 transform.position = new Vector3(transform.position.x, hit.point.y + 0.5f, transform.position.z);
+            }
+            if(!audSoc.isPlaying)
+            {
+                audSoc.Play();
+            }
+        }
+        else
+        {
+            if(audSoc.isPlaying)
+            {
+                audSoc.Stop();
             }
         }
     }

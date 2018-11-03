@@ -24,14 +24,15 @@ public class EnemyController : MonoBehaviour
         for (int x = 0; x < pc.teamTwoList.Count; x++)
         {
             pc.SelectUnit(pc.teamTwoList[x]);
-            if (GameObject.Find("MoveArea"))
+            if (pc.selectedUnit.aiWaypoints.Count>0)
             {
-                GameObject moveArea = GameObject.Find("MoveArea");//change to aiwaypoints in the unit
+                GameObject moveArea = pc.selectedUnit.aiWaypoints[0];
                 RaycastHit hit;
                 if(Physics.Raycast(moveArea.transform.position+Vector3.up+new Vector3(Random.Range(-5,5),0,Random.Range(-5,5)) ,Vector3.down,out hit,5,1<<9))
                 {
                     pc.AddWaypoint(0, Mathf.RoundToInt(Vector3.Distance(pc.teamTwoList[x].transform.position, hit.point)), hit.point + Vector3.up * 0.5f, "move", null); //check vector up displacement, increases by half meter every click
                 }
+                pc.selectedUnit.aiWaypoints.RemoveAt(0);
             }
             List<Unit> targetable = new List<Unit>();
             for (int i = 0; i < pc.teamOneList.Count; i++)
