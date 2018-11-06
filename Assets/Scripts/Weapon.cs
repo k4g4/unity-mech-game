@@ -68,13 +68,13 @@ public class Weapon : MonoBehaviour
 
     public int AccuracyCalc(Unit tgt)
     {
-        int ans = Mathf.RoundToInt(accuracy + (range - Vector3.Distance(tgt.transform.position,transform.position))*2);
+        int ans = Mathf.Clamp(Mathf.RoundToInt(accuracy + (range - Vector3.Distance(tgt.transform.position,transform.position))*2),0,100);
         return ans;
     }
 
     public int AccuracyCalc(Vector3 pos,Vector3 targetPos)
     {
-        int ans = Mathf.RoundToInt(accuracy + (range - Vector3.Distance(pos, targetPos)) * 2);
+        int ans = Mathf.Clamp(Mathf.RoundToInt(accuracy + (range - Vector3.Distance(pos, targetPos)) * 2),0,100);
         return ans;
     }
 

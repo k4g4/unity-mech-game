@@ -35,16 +35,17 @@ public class EnemyController : MonoBehaviour
                 pc.selectedUnit.aiWaypoints.RemoveAt(0);
             }
             List<Unit> targetable = new List<Unit>();
-            for (int i = 0; i < pc.teamOneList.Count; i++)
+            Collider[] collisions = Physics.OverlapSphere(pc.GetLastMovePoint().pos, 20f, 1 << 11);
+            for (int i = 0; i < collisions.Length; i++)
             {
-                if (!Physics.Raycast(pc.teamTwoList[x].transform.position + Vector3.up * 0.5f, pc.teamOneList[i].transform.position + Vector3.up * 0.5f - pc.teamTwoList[x].transform.position + Vector3.up * 0.5f, Vector3.Distance(pc.teamTwoList[x].transform.position, pc.teamOneList[i].transform.position), 1 << 9))
+                if (!Physics.Raycast(pc.teamTwoList[x].transform.position + Vector3.up * 0.5f, collisions[i].transform.position + Vector3.up * 0.5f - pc.teamTwoList[x].transform.position + Vector3.up * 0.5f, Vector3.Distance(pc.teamTwoList[x].transform.position, collisions[i].transform.position), 1 << 9))
                 {
-                    targetable.Add(pc.teamOneList[i]);
+                    targetable.Add(collisions[i].GetComponent<Unit>());
                 }
             }
             if(targetable.Count>0)
             {
-                for (int i = 0; i < targetable.Count/2; i++)
+                for (int i = 0; i < Mathf.CeilToInt(targetable.Count/2); i++)
                 {
                     int rand = Random.Range(0, 2);
                     if (rand == 0)
@@ -64,6 +65,7 @@ public class EnemyController : MonoBehaviour
             yield return Timing.WaitForSeconds(1f);
         }
         Debug.Log("enemy ending turn");
+        yield return Timing.WaitForOneFrame;
         pc.EndTurn();
     }
 }

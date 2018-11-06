@@ -8,7 +8,7 @@ public class PartDict : MonoBehaviour
 
     public Dictionary<int, GameObject> partDict = new Dictionary<int, GameObject>();
 
-    public GameObject ac231, ac234, guidMiss, shot30;
+    public GameObject ac231, ac234, guidMiss, shot30,plasma;
 
     void Awake()
     {
@@ -26,6 +26,7 @@ public class PartDict : MonoBehaviour
         partDict.Add(1, ac234);
         partDict.Add(2, guidMiss);
         partDict.Add(3, shot30);
+        partDict.Add(4, plasma);
         
     }
 }

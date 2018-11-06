@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArmoryController : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class ArmoryController : MonoBehaviour
             GameObject clone = Instantiate(armoryWeaponButton, armoryWeaponContent.transform);
             clone.GetComponent<ArmoryWeaponButton>().ac = this;
             clone.GetComponent<ArmoryWeaponButton>().weapon = GameController.instance.weapons[i];
+            clone.transform.GetChild(0).GetComponent<Text>().text = GameController.instance.weapons[i].weaponName;
         }
     }
 

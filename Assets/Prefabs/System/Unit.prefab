@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 4596214384040442}
   - component: {fileID: 114923427548085336}
   - component: {fileID: 136456554798109358}
+  - component: {fileID: 82142855149841958}
   m_Layer: 10
   m_Name: Unit
   m_TagString: Untagged
@@ -1217,6 +1218,102 @@ Transform:
   m_Father: {fileID: 4819443475096004}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &82142855149841958
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1209956123327652}
+  m_Enabled: 0
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: dcbc1009a6280e64e8864b25fe940051,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: fca418849adf68949a63b40ec3487b0d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &95740241228408610
 Animator:
   serializedVersion: 3
@@ -1264,13 +1361,10 @@ MonoBehaviour:
   actionPoints: 40
   maxActionPoints: 40
   attack: 5
+  unitType: 0
   walkSpeed: 4
   footprint: {fileID: 0}
-  initWeapons:
-  - {fileID: 1910581831875218, guid: ca7e96c23ff7e624093f769034788ad8, type: 2}
-  - {fileID: 1565024051043666, guid: 59987e2b1159f524fba5c1ed2e3c5b4d, type: 2}
-  - {fileID: 1735853504762046, guid: 0e77f3e7a60f4a74bab1dc288e237743, type: 2}
-  - {fileID: 1741934899626032, guid: 2569518ac90a43f489aaa15256eb8e12, type: 2}
+  initWeapons: []
   weapons: []
   isWalking: 0
   us: {fileID: 0}
@@ -1278,6 +1372,10 @@ MonoBehaviour:
   setWeapons: 1
   deathFX: {fileID: 1802260630569710, guid: 83fcda8e4a214f94fa4dbe693ce76622, type: 2}
   aiWaypoints: []
+  walkSFX: {fileID: 0}
+  usp: {fileID: 0}
+  unitSidePanel: {fileID: 1140437814308686, guid: b04f59bef76927943906ee8717d4d320,
+    type: 2}
 --- !u!136 &136456554798109358
 CapsuleCollider:
   m_ObjectHideFlags: 1

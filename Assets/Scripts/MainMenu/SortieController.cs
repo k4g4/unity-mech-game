@@ -61,13 +61,13 @@ public class SortieController : MonoBehaviour
         sortieUnitInfoText.text = unit.unitName;
     }
 
-    public void StartSortie()
+    public void StartSortie(int e)
     {
         for(int i=0;i<sortieActiveContent.transform.childCount;i++)
         {
             GameController.instance.activeUnits.Add(sortieActiveContent.transform.GetChild(i).GetComponent<SortieUnitButton>().unit);
         }
 
-        GameController.instance.LoadScene(level);
+        GameController.instance.LoadScene(e);
     }
 }

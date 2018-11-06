@@ -51,6 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca9efb11342e1e47a408e6c4eca1159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ac231: {fileID: 1517386618945884, guid: 59987e2b1159f524fba5c1ed2e3c5b4d, type: 2}
-  ac234: {fileID: 1005148661578064, guid: ca7e96c23ff7e624093f769034788ad8, type: 2}
-  guidMiss: {fileID: 1795105201777078, guid: 0e77f3e7a60f4a74bab1dc288e237743, type: 2}
+  ac231: {fileID: 1565024051043666, guid: 59987e2b1159f524fba5c1ed2e3c5b4d, type: 2}
+  ac234: {fileID: 1910581831875218, guid: ca7e96c23ff7e624093f769034788ad8, type: 2}
+  guidMiss: {fileID: 1735853504762046, guid: 0e77f3e7a60f4a74bab1dc288e237743, type: 2}
+  shot30: {fileID: 1741934899626032, guid: 2569518ac90a43f489aaa15256eb8e12, type: 2}
+  plasma: {fileID: 1024538445469876, guid: 6fe10f82ba2a69a4e8241d12e9fde846, type: 2}

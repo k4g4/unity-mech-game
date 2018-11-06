@@ -87,12 +87,12 @@ public class WeaponSelect : MonoBehaviour
     {
         for(int i=0;i<unit.weapons.Count;i++)
         {
-            weaponText[unit.weapons[i].partPos].text = unit.weapons[i].wepName;
-            weaponText[unit.weapons[i].partPos+4].text = unit.weapons[i].apCost + "";
+            weaponText[i].text = unit.weapons[i].wepName;
+            weaponText[i+4].text = unit.weapons[i].apCost + "";
             if(pc.GetLastMovePoint())
-                weaponText[unit.weapons[i].partPos + 8].text = unit.weapons[i].AccuracyCalc(pc.GetLastMovePoint().pos,target.transform.position) + "";
+                weaponText[i + 8].text = unit.weapons[i].AccuracyCalc(pc.GetLastMovePoint().pos,target.transform.position) + "";
             else
-                weaponText[unit.weapons[i].partPos + 8].text = unit.weapons[i].AccuracyCalc(unit.transform.position,target.transform.position) + "";
+                weaponText[i + 8].text = unit.weapons[i].AccuracyCalc(unit.transform.position,target.transform.position) + "";
         }
     }
 }

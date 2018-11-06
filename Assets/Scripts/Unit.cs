@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     public int actionPoints;
     public int maxActionPoints;
     public int attack;
+    public int unitType = 0;
     public float walkSpeed = 2f;
     public GameObject footprint;
     public List<GameObject> initWeapons = new List<GameObject>();
@@ -26,6 +27,8 @@ public class Unit : MonoBehaviour
     public List<GameObject> aiWaypoints = new List<GameObject>();
     AudioSource audSoc;
     public AudioClip walkSFX;
+    public UnitSidePanel usp;
+    public GameObject unitSidePanel;
 
     void Awake()
     {
@@ -36,6 +39,13 @@ public class Unit : MonoBehaviour
         if (health > maxHealth)
             health = maxHealth;
         audSoc = GetComponent<AudioSource>();
+        audSoc.Stop();
+        if(gameObject.layer==10)
+        {
+            GameObject clone = Instantiate(unitSidePanel, GameObject.Find("UnitInfoSidePanel").transform);
+            clone.GetComponent<UnitSidePanel>().unit = this;
+            usp = clone.GetComponent<UnitSidePanel>();
+        }
     }
 
     void Start()
@@ -60,43 +70,71 @@ public class Unit : MonoBehaviour
             }
         }
 
-        for(int i=0;i<4;i++)
+        for(int i=0;i<initWeapons.Count;i++)
         {
             if (!initWeapons[i])
+            {
                 continue;
+            }
             GameObject clone = Instantiate(FindObjectOfType<PartDict>().partDict[initWeapons[i].GetComponent<Weapon>().weaponID], transform);
             clone.GetComponent<Weapon>().partPos = i;
             weapons.Add(clone.GetComponent<Weapon>());
         }
 
-        for (int i=0;i<weapons.Count;i++)
+        for (int i = 0; i < weapons.Count; i++)
         {
-            switch (weapons[i].partPos)
+            if(unitType==0)
             {
-                case 0:
-                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LArm"));
-                    weapons[i].transform.localPosition = Vector3.zero;
-                    break;
-                case 1:
-                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RArm"));
-                    weapons[i].transform.localPosition = Vector3.zero;
-                    break;
-                case 2:
-                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LShoulder"));
-                    weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.right * 0.0004f;
-                    break;
-                case 3:
-                    weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RShoulder"));
-                    weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.left * 0.0004f;
-                    break;
-                default:
-                    Debug.Log("ERROR: Invalid part position - " + unitName + "|" + weapons[i].wepName);
-                    break;
+                switch (weapons[i].partPos)
+                {
+                    case 0:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LArm"));
+                        weapons[i].transform.localPosition = Vector3.zero;
+                        break;
+                    case 1:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RArm"));
+                        weapons[i].transform.localPosition = Vector3.zero;
+                        break;
+                    case 2:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/LShoulder"));
+                        weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.right * 0.0004f;
+                        break;
+                    case 3:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature.001/body.001/RShoulder"));
+                        weapons[i].transform.localPosition = Vector3.zero + Vector3.up * 0.0008f + Vector3.left * 0.0004f;
+                        break;
+                    default:
+                        Debug.Log("ERROR: Invalid part position - " + unitName + "|" + weapons[i].wepName);
+                        break;
+                }
+            }
+            else if(unitType==1)
+            {
+                switch (weapons[i].partPos)
+                {
+                    case 0:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature/body.001/body/LArm"));
+                        weapons[i].transform.localPosition = Vector3.zero;
+                        break;
+                    case 1:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature/body.001/body/RArm"));
+                        weapons[i].transform.localPosition = Vector3.zero;
+                        break;
+                    case 2:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature/body.001/body/LShoulder"));
+                        weapons[i].transform.localPosition = Vector3.zero;
+                        break;
+                    case 3:
+                        weapons[i].transform.SetParent(transform.Find("Model/Armature/body.001/body/RShoulder"));
+                        weapons[i].transform.localPosition = Vector3.zero;
+                        break;
+                    default:
+                        Debug.Log("ERROR: Invalid part position - " + unitName + "|" + weapons[i].wepName);
+                        break;
+                }
             }
         }
     }
-
-
 
     void Update()
     {
@@ -148,6 +186,9 @@ public class Unit : MonoBehaviour
     public void Damage(int hp)
     {
         health -= hp;
+        us.UpdateInfo();
+        if(usp)
+            usp.UpdateInfo();
         if(health < 1&&!isDead)
         {
             isDead = true;

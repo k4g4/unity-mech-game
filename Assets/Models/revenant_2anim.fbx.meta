@@ -1,0 +1,200 @@
+fileFormatVersion: 2
+guid: bd5f732158375874f9b855fdd4cd070f
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: arm.L
+    100002: arm.L_end
+    100004: arm.R
+    100006: arm.R_end
+    100008: Armature
+    100010: body
+    100012: Cube.009
+    100014: Cube.022
+    100016: Cube.066
+    100018: foot_cont_b.L
+    100020: foot_cont_b.L_end
+    100022: foot_cont_b.R
+    100024: foot_cont_b.R_end
+    100026: foot_cont_f.L
+    100028: foot_cont_f.L_end
+    100030: foot_cont_f.R
+    100032: foot_cont_f.R_end
+    100034: foot_rot_b.L
+    100036: foot_rot_b.L_end
+    100038: foot_rot_b.R
+    100040: foot_rot_b.R_end
+    100042: foot_rot_f.L
+    100044: foot_rot_f.L_end
+    100046: foot_rot_f.R
+    100048: foot_rot_f.R_end
+    100050: leg
+    100052: leg.001
+    100054: leg.002
+    100056: leg.003
+    100058: lower_b.L
+    100060: lower_b.R
+    100062: lower_f.L
+    100064: lower_f.R
+    100066: middle_b.L
+    100068: middle_b.R
+    100070: middle_f.L
+    100072: middle_f.R
+    100074: pivot_b.L
+    100076: pivot_b.R
+    100078: pivot_f.L
+    100080: pivot_f.R
+    100082: //RootNode
+    100084: root
+    100086: upper_b.L
+    100088: upper_b.R
+    100090: upper_f.L
+    100092: upper_f.R
+    400000: arm.L
+    400002: arm.L_end
+    400004: arm.R
+    400006: arm.R_end
+    400008: Armature
+    400010: body
+    400012: Cube.009
+    400014: Cube.022
+    400016: Cube.066
+    400018: foot_cont_b.L
+    400020: foot_cont_b.L_end
+    400022: foot_cont_b.R
+    400024: foot_cont_b.R_end
+    400026: foot_cont_f.L
+    400028: foot_cont_f.L_end
+    400030: foot_cont_f.R
+    400032: foot_cont_f.R_end
+    400034: foot_rot_b.L
+    400036: foot_rot_b.L_end
+    400038: foot_rot_b.R
+    400040: foot_rot_b.R_end
+    400042: foot_rot_f.L
+    400044: foot_rot_f.L_end
+    400046: foot_rot_f.R
+    400048: foot_rot_f.R_end
+    400050: leg
+    400052: leg.001
+    400054: leg.002
+    400056: leg.003
+    400058: lower_b.L
+    400060: lower_b.R
+    400062: lower_f.L
+    400064: lower_f.R
+    400066: middle_b.L
+    400068: middle_b.R
+    400070: middle_f.L
+    400072: middle_f.R
+    400074: pivot_b.L
+    400076: pivot_b.R
+    400078: pivot_f.L
+    400080: pivot_f.R
+    400082: //RootNode
+    400084: root
+    400086: upper_b.L
+    400088: upper_b.R
+    400090: upper_f.L
+    400092: upper_f.R
+    2100000: No Name
+    4300000: leg.003
+    4300002: leg.002
+    4300004: leg.001
+    4300006: Cube.022
+    4300008: Cube.009
+    4300010: Cube.066
+    4300012: leg
+    7400000: Armature|Idle
+    7400002: Armature|Walk_Cycle
+    9500000: //RootNode
+    13700000: Cube.009
+    13700002: Cube.022
+    13700004: Cube.066
+    13700006: leg
+    13700008: leg.001
+    13700010: leg.002
+    13700012: leg.003
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

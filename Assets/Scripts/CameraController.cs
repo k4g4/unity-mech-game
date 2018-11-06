@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour
             transform.GetChild(0).transform.rotation = Quaternion.Lerp(transform.GetChild(0).transform.rotation, targetRot, Time.deltaTime * 2f);
 
         }
+        transform.Translate(Vector3.up * Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * -500);
     }
 
     public void FlipCamera()
@@ -48,7 +49,6 @@ public class CameraController : MonoBehaviour
         {
             case 0:
                 int rand = Random.Range(0, 2);
-                Debug.Log(rand);
                 if(rand == 0)
                     Timing.RunCoroutine(GunCameraOne(attacker, defender));
                 else if(rand == 1)

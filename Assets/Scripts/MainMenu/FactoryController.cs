@@ -32,14 +32,15 @@ public class FactoryController : MonoBehaviour
         GameController.instance.SaveProfile();
     }
 
-    public void BuildWeapon()
+    public void BuildWeapon(int i)
     {
         WeaponData weapon = ScriptableObject.CreateInstance<WeaponData>();
         if (GameController.instance.weapons.Count < 1)
             weapon.weaponID = 0;
         else
             weapon.weaponID = GameController.instance.weapons[GameController.instance.weapons.Count - 1].weaponID + 1;
-        weapon.weaponName = "Autocannon 20";
+        weapon.weaponName = PartDict.instance.partDict[i].GetComponent<Weapon>().wepName;
+        weapon.weaponType = PartDict.instance.partDict[i].GetComponent<Weapon>().weaponID;
         GameController.instance.weapons.Add(weapon);
         GameController.instance.SaveProfile();
     }

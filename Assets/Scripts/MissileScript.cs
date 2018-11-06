@@ -6,7 +6,7 @@ using MEC;
 public class MissileScript : MonoBehaviour
 {
     public float speed;
-
+    public GameObject explosionFX;
 
     public Weapon weapon;
     public Unit target;
@@ -31,6 +31,9 @@ public class MissileScript : MonoBehaviour
 
             if(Vector3.Distance(transform.position,target.transform.position)<0.2f)
             {
+                GameObject clone = Instantiate(explosionFX);
+                GetComponent<AudioSource>().Stop();
+                clone.transform.position = transform.position;
                 weapon.HitCalc(target);
                 foreach(Transform child in transform)
                 {

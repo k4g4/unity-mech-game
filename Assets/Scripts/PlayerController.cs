@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     GameObject apCost;
     bool isInverse = true;
     public int turnCount = 1;
+    UnitStatus[] unitStatus;
+    public GameObject mech,heavyMech;
 
     void Awake()
     {
@@ -42,6 +44,35 @@ public class PlayerController : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         apCost = GameObject.Find("APCostText");
         wepSelect.gameObject.SetActive(false);
+        SpawnUnits();
+    }
+
+    void SpawnUnits()
+    {
+        if (!GameController.instance)
+            return;
+        for(int i=0;i<GameController.instance.activeUnits.Count;i++)
+        {
+            GameObject clone;
+            if (GameController.instance.activeUnits[i].unitType == 1)
+                clone = Instantiate(mech);
+            else
+                clone = Instantiate(heavyMech);
+            clone.transform.position = GameObject.Find("SpawnPoint").transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5));
+            Unit cloneUnit = clone.GetComponent<Unit>();
+            cloneUnit.unitName = GameController.instance.activeUnits[i].unitName;
+            cloneUnit.maxHealth = GameController.instance.activeUnits[i].maxHealth;
+            cloneUnit.health = GameController.instance.activeUnits[i].health;
+            cloneUnit.maxActionPoints = GameController.instance.activeUnits[i].maxActionPoints;
+            cloneUnit.actionPoints = cloneUnit.maxActionPoints;
+            for(int j=0;j<GameController.instance.activeUnits[i].weapons.Count;j++)
+            {
+                Debug.Log(GameController.instance.activeUnits[i].weapons[j].weaponType);
+                GameObject wepClone = Instantiate(PartDict.instance.partDict[GameController.instance.activeUnits[i].weapons[j].weaponType]);
+                wepClone.GetComponent<Weapon>().partPos = GameController.instance.activeUnits[i].weapons[j].weaponPos;
+                cloneUnit.weapons.Add(wepClone.GetComponent<Weapon>());
+            }
+        }
     }
 
     void Start()
@@ -90,6 +121,7 @@ public class PlayerController : MonoBehaviour
             else
                 teamOneList[i].gameObject.layer = 10;
             teamOneList[i].actionPoints = teamOneList[i].maxActionPoints;
+            teamOneList[i].us.UpdateInfo();
         }
 
         for (int i=0;i<teamTwoList.Count;i++)
@@ -99,6 +131,7 @@ public class PlayerController : MonoBehaviour
             else
                 teamTwoList[i].gameObject.layer = 11;
             teamTwoList[i].actionPoints = teamTwoList[i].maxActionPoints;
+            teamTwoList[i].us.UpdateInfo();
         }
         ClearWaypoints();
         //cc.FlipCamera();
@@ -141,6 +174,8 @@ public class PlayerController : MonoBehaviour
             {
                 selectedUnit.actionPoints += waypoints[waypoints.Count - 1].apCost;
                 selectedUnit.us.UpdateInfo();
+                if (selectedUnit.usp)
+                    selectedUnit.usp.UpdateInfo();
                 RemoveWaypoint(waypoints.Count - 1);
             }
             else if(selectedUnit)
@@ -210,6 +245,8 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedUnit.actionPoints += waypoints[0].apCost;
                         selectedUnit.us.UpdateInfo();
+                        if (selectedUnit.usp)
+                            selectedUnit.usp.UpdateInfo();
                         RemoveWaypoint(0);
                     }
                     else
@@ -226,6 +263,7 @@ public class PlayerController : MonoBehaviour
             selectedUnit = null;
             isExecuting = false;
             cc.ResetCamera();
+            ShowUnitInfo(true);
         }
     }
 
@@ -259,6 +297,8 @@ public class PlayerController : MonoBehaviour
     {
         if(waypoints.Count>0)
         {
+            unitStatus = FindObjectsOfType<UnitStatus>();
+            ShowUnitInfo(false);
             cc.originalPos = cc.transform.position;
             isExecuting = true;
             //selectedUnit.Move(waypoints[0].pos);
@@ -277,6 +317,15 @@ public class PlayerController : MonoBehaviour
         return waypoints[0];
     }
 
+    public void ShowUnitInfo(bool show)
+    {
+        for(int i=0;i< unitStatus.Length;i++)
+        {
+            if(unitStatus[i])
+                unitStatus[i].gameObject.SetActive(show);
+        }
+    }
+
     public void AddWaypoint(int type, int apCost, Vector3 pos, string info, Unit target) //Creates a waypoint based on type
     {
         Waypoint lastMovePoint = GetLastMovePoint();
@@ -292,6 +341,8 @@ public class PlayerController : MonoBehaviour
         //selectedUnit.Move(hit.point);
         selectedUnit.actionPoints -= temp.apCost;
         selectedUnit.us.SetAP(temp.apCost);
+        if(selectedUnit.usp)
+            selectedUnit.usp.UpdateInfo();
         marker.GetComponent<WaypointMarker>().pos = temp.pos;
         marker.GetComponent<WaypointMarker>().SetInfo(info);
         if (type == 0)
@@ -337,7 +388,7 @@ public class PlayerController : MonoBehaviour
                         //lastMovePoint.pos = lastMovePoint.pos + Vector3.up * 0.5f;
                         if (HasPointsToMove(selectedUnit, temp.pos, hit.point)) //Change to check on a 2d plane only later
                         {
-                            if (!Physics.Raycast(temp.pos, (hit.point + Vector3.up * 0.5f) - temp.pos, Vector3.Distance(temp.pos, hit.point + Vector3.up * 0.5f), 1 << 9))
+                            if (!Physics.Raycast(temp.pos, (hit.point + Vector3.up * 0.5f) - temp.pos, Vector3.Distance(temp.pos, hit.point + Vector3.up * 0.5f), 1 << 9 | 1<<12) && hit.transform.tag != "NoWalk")
                             {
                                 string info = waypoints.Count + " : MOVE\nAP Cost : " + Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)) + "\nAP Rem : " + selectedUnit.actionPoints;
                                 AddWaypoint(0, Mathf.RoundToInt(Vector3.Distance(temp.pos, hit.point)), hit.point + Vector3.up * 0.5f, info, null); //check vector up displacement, increases by half meter every click
@@ -403,6 +454,8 @@ public class PlayerController : MonoBehaviour
         waypoints[waypoints.Count-1].apCost = selectedUnit.weapons[type].apCost;
         waypoints[waypoints.Count-1].wepType = type;
         selectedUnit.us.UpdateInfo();
+        if (selectedUnit.usp)
+            selectedUnit.usp.UpdateInfo();
     }
 
     public void SelectUnit(Unit unit)
@@ -431,6 +484,8 @@ public class PlayerController : MonoBehaviour
             {
                 selectedUnit.actionPoints += waypoints[0].apCost;
                 selectedUnit.us.UpdateInfo();
+                if (selectedUnit.usp)
+                    selectedUnit.usp.UpdateInfo();
             }
             Waypoint temp = waypoints[0];
             Destroy(temp.waypointMarker);

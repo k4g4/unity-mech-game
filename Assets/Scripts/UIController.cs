@@ -11,8 +11,6 @@ public class UIController : MonoBehaviour
     public GameObject hitDamage;
     Canvas canvas;
 
-    
-
     void Awake()
     {
         mouseInfoBoxBG = GameObject.Find("MouseInfoBoxBG");
@@ -66,13 +64,13 @@ public class UIController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 100f))
         {
-            mouseInfoBoxBG.transform.position = Input.mousePosition + new Vector3(120,-50,0);
+            mouseInfoBoxBG.transform.position = Input.mousePosition + new Vector3(180,-100,0);
 
             if (hit.transform.GetComponent<Unit>())
             {
                 Unit unit = hit.transform.GetComponent<Unit>();
                 mouseInfoBoxBG.SetActive(true);
-                mouseInfoBoxText.text = "Name: " + unit.name + "\nHealth: " + unit.health + "\nAP: " + unit.actionPoints + "\nAttack: " + unit.attack;
+                mouseInfoBoxText.text = "Name: " + unit.unitName + "\nHealth: " + unit.health + "\nAP: " + unit.actionPoints + "\nAttack: " + unit.attack;
             }
             else if(mouseInfoBoxBG.gameObject.activeInHierarchy)
             {
