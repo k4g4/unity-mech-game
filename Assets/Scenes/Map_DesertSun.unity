@@ -171,7 +171,7 @@ GameObject:
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1110,6 +1110,15 @@ Prefab:
       value: 
       objectReference: {fileID: 1209956123327652, guid: aacc5f9265e317047a6a004e6aaa63c8,
         type: 2}
+    - target: {fileID: 114854037172581352, guid: ba7bdc093e346c54fa22fb22fb106e05,
+        type: 2}
+      propertyPath: m_Text
+      value: 'OBJECTIVES
+
+        - HOLD FOR 4 TURNS
+
+        - ESCAPE'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba7bdc093e346c54fa22fb22fb106e05, type: 2}
   m_IsPrefabAsset: 0
