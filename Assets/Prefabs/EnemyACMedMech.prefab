@@ -1363,9 +1363,7 @@ MonoBehaviour:
   usObj: {fileID: 1085995673490002, guid: 87c2dbc507e3ef446a96c3b890b7ef81, type: 2}
   setWeapons: 1
   deathFX: {fileID: 1802260630569710, guid: 83fcda8e4a214f94fa4dbe693ce76622, type: 2}
-  aiWaypoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  aiWaypoints: []
   walkSFX: {fileID: 0}
   usp: {fileID: 0}
   unitSidePanel: {fileID: 0}

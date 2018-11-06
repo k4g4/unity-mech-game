@@ -490,7 +490,7 @@ MonoBehaviour:
   hitFX: {fileID: 1324682534732774, guid: 5acf7f35e33c51f41b1eb2283ba6afa3, type: 2}
   wepName: Plasma Cannon
   weaponID: 4
-  maxDmg: 20
+  maxDmg: 40
   accuracy: 60
   weaponType: 0
   burstFire: 3

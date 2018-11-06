@@ -58,6 +58,14 @@ public class Unit : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, hit.point.y + 0.5f, transform.position.z);
         }
+        UpdateInfo();
+    }
+
+    void UpdateInfo()
+    {
+        if (usp)
+            usp.UpdateInfo();
+        us.UpdateInfo();
     }
 
     void SetWeapons()

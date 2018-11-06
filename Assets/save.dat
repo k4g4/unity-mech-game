@@ -30,9 +30,9 @@ GuidedMissile
 True
 8
 GuidedMissile
--1
+0
 2
-False
+True
 9
 SHOT20-2
 -1
@@ -70,9 +70,9 @@ GuidedMissile
 True
 16
 GuidedMissile
-0
+-1
 2
-True
+False
 17
 GuidedMissile
 2
@@ -157,13 +157,13 @@ Unit 003
 3
 Rook 1A
 2
-100
-100
-30
+400
+400
+50
 0
 0
 11
 12
-16
 15
+8
 ###UNITEND###

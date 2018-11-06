@@ -13,6 +13,16 @@ public class EnemyController : MonoBehaviour
         cc = FindObjectOfType<CameraController>();
         pc = FindObjectOfType<PlayerController>();
 	}
+
+    void Start()
+    {
+        for(int i=0;i<pc.teamTwoList.Count;i++)
+        {
+            pc.teamTwoList[i].aiWaypoints.Add(GameObject.Find("WP1"));
+            pc.teamTwoList[i].aiWaypoints.Add(GameObject.Find("WP2"));
+
+        }
+    }
 	
     public void StartTurn()
     {

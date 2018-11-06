@@ -83,8 +83,19 @@ public class WeaponSelect : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    void ResetText()
+    {
+        for(int i=0;i<4;i++)
+        {
+            weaponText[i].text = "N/A";
+            weaponText[i + 4].text = "N/A";
+            weaponText[i + 8].text = "N/A";
+        }
+    }
+
     public void SetWeaponText(Unit unit,Unit target)
     {
+        ResetText();
         for(int i=0;i<unit.weapons.Count;i++)
         {
             weaponText[i].text = unit.weapons[i].wepName;

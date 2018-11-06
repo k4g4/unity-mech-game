@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
             {
                 cc.FollowUnit(selectedUnit);
                 selectedUnit.Move(waypoints[0].pos);
-                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.1f)
+                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.2f)
                 {
                     selectedUnit.isWalking = false;
                     RemoveWaypoint(0);
