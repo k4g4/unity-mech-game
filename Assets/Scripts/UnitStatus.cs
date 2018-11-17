@@ -34,7 +34,7 @@ public class UnitStatus : MonoBehaviour
 
     void Update()
     {
-        transform.position = Camera.main.WorldToScreenPoint(unit.transform.position + Vector3.forward + Vector3.up + Vector3.right);
+        transform.position = Camera.main.WorldToScreenPoint(unit.transform.position);
         Vector3 viewPos = Camera.main.WorldToViewportPoint(unit.transform.position);
         if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
         {

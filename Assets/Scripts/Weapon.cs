@@ -81,7 +81,7 @@ public class Weapon : MonoBehaviour
 
     IEnumerator<float> FireGuidedMissile(Unit tgt)
     {
-        yield return Timing.WaitForSeconds(2f);
+        yield return Timing.WaitForSeconds(1f);
         foreach (Transform child in transform)
         {
             if (child.GetComponent<ParticleSystem>())
@@ -98,7 +98,7 @@ public class Weapon : MonoBehaviour
 
     IEnumerator<float> FireGun(Unit tgt)
     {
-        yield return Timing.WaitForSeconds(2f);
+        yield return Timing.WaitForSeconds(1f);
         for (int i=0;i<burstFire;i++)
         {
             audSoc.PlayOneShot(shootSFX);
@@ -114,7 +114,7 @@ public class Weapon : MonoBehaviour
             //ps.Emit(1);
             yield return Timing.WaitForSeconds(fireDelay);
         }
-        yield return Timing.WaitForSeconds(4f);
+        yield return Timing.WaitForSeconds(2f);
         pc.attackContinue = true;
     }
 
@@ -142,7 +142,7 @@ public class Weapon : MonoBehaviour
 
     IEnumerator<float> FireShotgun(Unit tgt)
     {
-        yield return Timing.WaitForSeconds(2f);
+        yield return Timing.WaitForSeconds(1f);
         transform.GetChild(0).GetComponent<ParticleSystem>().Emit(1); //Muzzle
         transform.GetChild(1).GetComponent<ParticleSystem>().Emit(burstFire); //Emitter
         transform.GetChild(2).GetComponent<ParticleSystem>().Emit(2);

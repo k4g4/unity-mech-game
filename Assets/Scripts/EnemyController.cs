@@ -13,6 +13,17 @@ public class EnemyController : MonoBehaviour
         cc = FindObjectOfType<CameraController>();
         pc = FindObjectOfType<PlayerController>();
 	}
+
+    void Start()
+    {
+        for(int i=0;i<pc.teamTwoList.Count;i++)
+        {
+            pc.teamTwoList[i].aiWaypoints.Add(GameObject.Find("WP1"));
+            pc.teamTwoList[i].aiWaypoints.Add(GameObject.Find("WP2"));
+            pc.teamTwoList[i].aiWaypoints.Add(GameObject.Find("WP3"));
+
+        }
+    }
 	
     public void StartTurn()
     {
@@ -28,7 +39,7 @@ public class EnemyController : MonoBehaviour
             {
                 GameObject moveArea = pc.selectedUnit.aiWaypoints[0];
                 RaycastHit hit;
-                if(Physics.Raycast(moveArea.transform.position+Vector3.up+new Vector3(Random.Range(-5,5),0,Random.Range(-5,5)) ,Vector3.down,out hit,5,1<<9))
+                if(Physics.Raycast(moveArea.transform.position+Vector3.up+new Vector3(Random.Range(-5f,5f),0,Random.Range(-5f,5f)) ,Vector3.down,out hit,5,1<<9))
                 {
                     pc.AddWaypoint(0, Mathf.RoundToInt(Vector3.Distance(pc.teamTwoList[x].transform.position, hit.point)), hit.point + Vector3.up * 0.5f, "move", null); //check vector up displacement, increases by half meter every click
                 }
@@ -38,7 +49,8 @@ public class EnemyController : MonoBehaviour
             Collider[] collisions = Physics.OverlapSphere(pc.GetLastMovePoint().pos, 20f, 1 << 11);
             for (int i = 0; i < collisions.Length; i++)
             {
-                if (!Physics.Raycast(pc.teamTwoList[x].transform.position + Vector3.up * 0.5f, collisions[i].transform.position + Vector3.up * 0.5f - pc.teamTwoList[x].transform.position + Vector3.up * 0.5f, Vector3.Distance(pc.teamTwoList[x].transform.position, collisions[i].transform.position), 1 << 9))
+                Debug.DrawRay(pc.selectedUnit.transform.position, collisions[i].transform.position - pc.selectedUnit.transform.position);
+                if (!Physics.Raycast(pc.selectedUnit.transform.position, collisions[i].transform.position - pc.selectedUnit.transform.position, Vector3.Distance(pc.selectedUnit.transform.position, collisions[i].transform.position), 1 << 9))
                 {
                     targetable.Add(collisions[i].GetComponent<Unit>());
                 }
@@ -57,12 +69,13 @@ public class EnemyController : MonoBehaviour
 
                 }
             }
-            pc.Execute();
+            if(pc.waypoints.Count>0)
+                pc.Execute();
             while(pc.waypoints.Count>0 || cc.isAnimating)
             {
                 yield return 0;
             }
-            yield return Timing.WaitForSeconds(1f);
+            yield return Timing.WaitForSeconds(.5f);
         }
         Debug.Log("enemy ending turn");
         yield return Timing.WaitForOneFrame;

@@ -33,13 +33,13 @@ public class CameraController : MonoBehaviour
     public void FollowUnit(Unit unit)
     {
         isAnimating = true;
-        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 4 - Vector3.forward*2, speed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 6 - Vector3.forward*2, speed * Time.deltaTime);
     }
 
     public void FollowUnit(GameObject unit)
     {
         isAnimating = true;
-        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 2 - Vector3.forward, speed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, unit.transform.position + Vector3.up * 4 - Vector3.forward, speed * Time.deltaTime);
     }
 
 
@@ -79,9 +79,9 @@ public class CameraController : MonoBehaviour
         isFollowing = true;
         targetPos = atk.transform.position + Vector3.up*0.5f - atk.transform.forward * 2;
         targetRot = Quaternion.LookRotation(def.transform.position - atk.transform.position);
-        yield return Timing.WaitForSeconds(3f);
+        yield return Timing.WaitForSeconds(2f);
         targetPos = def.transform.position + Vector3.up*0.5f - atk.transform.forward * 2;
-        yield return Timing.WaitForSeconds(3f);
+        yield return Timing.WaitForSeconds(2f);
         isFollowing = false;
     }
 
@@ -100,7 +100,7 @@ public class CameraController : MonoBehaviour
         */
         targetPos = def.transform.position + Vector3.up * 0.5f + atk.transform.forward * 2;
         targetRot = Quaternion.LookRotation(atk.transform.position - def.transform.position);
-        yield return Timing.WaitForSeconds(6f);
+        yield return Timing.WaitForSeconds(4f);
         isFollowing = false;
     }
 

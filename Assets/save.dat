@@ -10,7 +10,7 @@ AC23-1
 False
 4
 AC23-1
-0
+-1
 0
 False
 5
@@ -30,9 +30,9 @@ GuidedMissile
 True
 8
 GuidedMissile
--1
+0
 2
-False
+True
 9
 SHOT20-2
 -1
@@ -40,37 +40,37 @@ SHOT20-2
 False
 10
 SHOT20-2
--1
+0
 3
-False
+True
 11
 Plasma Cannon
+-1
+4
+False
+12
+Plasma Cannon
+-1
+4
+False
+13
+Plasma Cannon
 2
 4
 True
-12
+14
 Plasma Cannon
 3
 4
 True
-13
-Plasma Cannon
--1
-4
-False
-14
-Plasma Cannon
--1
-4
-False
 15
 GuidedMissile
-1
+-1
 2
-True
+False
 16
 GuidedMissile
-0
+2
 2
 True
 17
@@ -90,9 +90,9 @@ GuidedMissile
 True
 20
 SHOT20-2
-0
+-1
 3
-True
+False
 21
 SHOT20-2
 1
@@ -110,7 +110,7 @@ AC23-4
 True
 24
 AC23-4
-0
+-1
 1
 False
 ###UNITS###
@@ -123,9 +123,9 @@ Unit 001
 30
 0
 0
+23
+10
 7
-5
-6
 ###UNITEND###
 ###UNIT###
 1
@@ -136,8 +136,9 @@ Unit 002
 30
 0
 0
-20
-23
+16
+5
+6
 ###UNITEND###
 ###UNIT###
 2
@@ -157,13 +158,12 @@ Unit 003
 3
 Rook 1A
 2
-100
-100
-30
+400
+400
+50
 0
 0
-11
-12
-16
-15
+13
+14
+8
 ###UNITEND###

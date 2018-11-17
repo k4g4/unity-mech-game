@@ -112,9 +112,21 @@ public class PlayerController : MonoBehaviour
             teamTwoList.Remove(unit);
     }
 
+    public void TryEndTurn()
+    {
+        if(!isExecuting && isInverse)
+            EndTurn();
+    }
+
     public void EndTurn() //Swap unit layers
     {
-        for(int i=0;i<teamOneList.Count;i++)
+        AirstrikeScript[] airstrikes = FindObjectsOfType<AirstrikeScript>();
+        foreach (AirstrikeScript atk in airstrikes)
+        {
+            atk.turn++;
+        }
+
+        for (int i=0;i<teamOneList.Count;i++)
         {
             if(isInverse)
                 teamOneList[i].gameObject.layer = 11;
@@ -231,7 +243,7 @@ public class PlayerController : MonoBehaviour
             {
                 cc.FollowUnit(selectedUnit);
                 selectedUnit.Move(waypoints[0].pos);
-                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.1f)
+                if (Vector3.Distance(selectedUnit.transform.position, waypoints[0].pos) < 0.2f)
                 {
                     selectedUnit.isWalking = false;
                     RemoveWaypoint(0);
@@ -268,6 +280,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public bool attackContinue = false;
+
     IEnumerator<float> AttackAnim()
     {
         isExecuting = false;
@@ -359,7 +372,7 @@ public class PlayerController : MonoBehaviour
             temp.target = target;
     }
 
-    void RemoveWaypoint(int i)
+    public void RemoveWaypoint(int i)
     {
         Waypoint temp = waypoints[i];
         Destroy(temp.waypointMarker);

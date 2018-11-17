@@ -58,6 +58,14 @@ public class Unit : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, hit.point.y + 0.5f, transform.position.z);
         }
+        UpdateInfo();
+    }
+
+    void UpdateInfo()
+    {
+        if (usp)
+            usp.UpdateInfo();
+        us.UpdateInfo();
     }
 
     void SetWeapons()
@@ -151,6 +159,10 @@ public class Unit : MonoBehaviour
             {
                 audSoc.Play();
             }
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                transform.position = movePos;
+            }
         }
         else
         {
@@ -160,6 +172,7 @@ public class Unit : MonoBehaviour
             }
         }
     }
+
 
     public void Move(Vector3 targetPos)
     {
