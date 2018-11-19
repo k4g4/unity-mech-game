@@ -12,7 +12,7 @@ public class AirstrikeScript : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        transform.GetChild(0).localScale = new Vector3(radius*10, radius*10, radius*10);
+        transform.localScale = new Vector3(radius, radius, radius);
 	}
 	
 	// Update is called once per frame
@@ -22,6 +22,7 @@ public class AirstrikeScript : MonoBehaviour
         {
             Hit();
         }
+        transform.Rotate(Vector3.up *5* Time.deltaTime);
 	}
 
     public void Hit()

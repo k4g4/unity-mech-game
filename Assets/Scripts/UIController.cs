@@ -10,14 +10,18 @@ public class UIController : MonoBehaviour
     public Unit selectedUnit;
     public GameObject hitDamage;
     Canvas canvas;
+    GameObject pauseBG;
+    bool isPaused = false;
 
     void Awake()
     {
+        pauseBG = GameObject.Find("PauseBG");
         mouseInfoBoxBG = GameObject.Find("MouseInfoBoxBG");
         mouseInfoBoxText = GameObject.Find("MouseInfoBoxText").GetComponent<Text>();
         unitInfoText = GameObject.Find("UnitInfoText").GetComponent<Text>();
         turnCounter = GameObject.Find("TurnCounter").GetComponent<Text>();
         canvas = FindObjectOfType<Canvas>();
+        pauseBG.SetActive(false);
     }
 
 	
@@ -46,7 +50,26 @@ public class UIController : MonoBehaviour
                                 + "\nHealth : " + selectedUnit.health + "\\" + selectedUnit.maxHealth
                                 + "\nAP : " + selectedUnit.actionPoints + "\\" + selectedUnit.maxActionPoints;
         }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePause();
+        }
 	}
+
+    public void TogglePause()
+    {
+        if(!isPaused)
+        {
+            pauseBG.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            pauseBG.SetActive(false);
+            Time.timeScale = 1;
+        }
+        isPaused = !isPaused;
+    }
 
     public void Damage(Unit tgt, string dam)
     {

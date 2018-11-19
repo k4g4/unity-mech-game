@@ -23,6 +23,12 @@ public class CameraController : MonoBehaviour
 
         }
         transform.Translate(Vector3.up * Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * -500);
+
+        Vector3 clamp = transform.position;
+        clamp.y = Mathf.Clamp(clamp.y, -1, 100);
+        clamp.x = Mathf.Clamp(clamp.x, -100, 100);
+        clamp.z=Mathf.Clamp(clamp.z, -150, -50);
+        transform.position = clamp;
     }
 
     public void FlipCamera()

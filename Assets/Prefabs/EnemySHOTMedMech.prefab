@@ -1362,7 +1362,7 @@ MonoBehaviour:
   maxActionPoints: 40
   attack: 5
   unitType: 0
-  walkSpeed: 4
+  walkSpeed: 8
   footprint: {fileID: 0}
   initWeapons:
   - {fileID: 1741934899626032, guid: 2569518ac90a43f489aaa15256eb8e12, type: 2}

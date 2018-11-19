@@ -33,7 +33,7 @@ public class Unit : MonoBehaviour
     void Awake()
     {
         anim = transform.GetChild(0).GetComponent<Animator>();
-        us = Instantiate(usObj,FindObjectOfType<Canvas>().transform).GetComponent<UnitStatus>();
+        us = Instantiate(usObj,GameObject.Find("Canvas").transform).GetComponent<UnitStatus>();
         us.transform.SetAsFirstSibling();
         us.unit = this;
         if (health > maxHealth)

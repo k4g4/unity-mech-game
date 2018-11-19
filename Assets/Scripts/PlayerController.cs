@@ -35,9 +35,11 @@ public class PlayerController : MonoBehaviour
     public int turnCount = 1;
     UnitStatus[] unitStatus;
     public GameObject mech,heavyMech;
+    GameObject notificationText;
 
     void Awake()
     {
+        notificationText = GameObject.Find("NotificationText");
         wepSelect = FindObjectOfType<WeaponSelect>();
         uic = FindObjectOfType<UIController>();
         cc = FindObjectOfType<CameraController>();
@@ -148,14 +150,26 @@ public class PlayerController : MonoBehaviour
         ClearWaypoints();
         //cc.FlipCamera();
         if (isInverse)
+        {
             FindObjectOfType<EnemyController>().StartTurn();
+            Timing.RunCoroutine(NotificationDelay("ENEMY TURN"));
+        }
         else
         {
             turnCount++;
             uic.SetTurnCounter(turnCount);
+            Timing.RunCoroutine(NotificationDelay("PLAYER TURN"));
         }
         isInverse = !isInverse;
         Debug.Log("Ending turn");
+    }
+
+    IEnumerator<float> NotificationDelay(string text)
+    {
+        notificationText.SetActive(true);
+        notificationText.GetComponent<Text>().text = text;
+        yield return Timing.WaitForSeconds(5f);
+        notificationText.SetActive(false);
     }
 
     void Update()
