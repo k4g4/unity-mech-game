@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Terrain
+  - NoWalk
+  - NoShoot
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - Floor
   - TeamOne
   - TeamTwo
-  - 
+  - Unpassable
   - 
   - 
   - 

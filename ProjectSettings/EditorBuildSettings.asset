@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: e87ed978e05655c4aa0474b799996127
+  - enabled: 1
+    path: Assets/Scenes/Map_DesertSun.unity
+    guid: 3e78ea60a37c777499744b267f960378
   m_configObjects: {}
